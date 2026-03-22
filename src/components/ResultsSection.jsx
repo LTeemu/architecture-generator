@@ -44,7 +44,7 @@ ${costBreakdown?.map(row => `- ${row.item}: ${row.costEur} (${row.notes})`).join
 ## Scaling Roadmap
 ${scalingPath}
 
-## Mermaid Diagram
+${dynData?.architecturalPatterns ? `## Advanced Patterns\n${dynData.architecturalPatterns}\n\n` : ""}## Mermaid Diagram
 \`\`\`mermaid
 ${mermaidChart}
 \`\`\`
@@ -165,11 +165,17 @@ ${codingPrompt}
               </div>
             )}
             {(arch?.keyDecisions || []).length > 0 && (
-              <div>
-                <div style={{ fontSize: "10px", fontWeight: 700, color: "#7c3aed", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>Key Decisions</div>
+              <div style={{ marginBottom: "18px" }}>
+                <div style={{ fontSize: "10px", fontWeight: 700, color: "#7c3aed", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>Key Decisions & Patterns</div>
                 {arch.keyDecisions.map((d, i) => (
                   <div key={i} style={{ padding: "9px 13px", borderLeft: "3px solid #c4b5fd", marginBottom: "7px", background: darkMode ? "#0f172a" : "#faf8ff", borderRadius: "0 8px 8px 0", fontSize: "13px", color: darkMode ? "#94a3b8" : "#555", lineHeight: "1.6" }}>{d}</div>
                 ))}
+              </div>
+            )}
+            {dynData?.architecturalPatterns && (
+              <div style={{ padding: "12px", background: darkMode ? "#1e1b4b" : "#eef2ff", borderRadius: "8px", border: "1px solid", borderColor: darkMode ? "#312e81" : "#c7d2fe" }}>
+                <div style={{ fontSize: "10px", fontWeight: 700, color: "#4338ca", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "6px" }}>Advanced Patterns</div>
+                <p style={{ color: darkMode ? "#c7d2fe" : "#3730a3", fontSize: "13px", lineHeight: "1.5", margin: 0, fontWeight: 500 }}>{dynData.architecturalPatterns}</p>
               </div>
             )}
           </div>

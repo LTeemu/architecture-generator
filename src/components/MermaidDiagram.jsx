@@ -38,6 +38,11 @@ export function MermaidDiagram({ chart, darkMode }) {
     // Handle squashed definitions where a label is immediately followed by another bracket
     c = c.replace(/(\])\s*(\[)/g, '$1\n$2');
 
+    // Fix missing quotes in brackets/shapes for better compatibility
+    c = c.replace(/\[([^"\]\n]+)\]/g, '["$1"]');
+    c = c.replace(/\(\(([^" \)\n]+)\)\)/g, '(("$1"))');
+    c = c.replace(/\{([^"\}\n]+)\}/g, '{"$1"}');
+
     // Fix squashed diagram starts or directions in the middle (e.g., "]TD[", "]graph TD[")
     c = c.replace(/(\])\s*(TD|LR|BT|RL|graph|flowchart)\s*([\[\w])/gi, '$1\n$3');
 
@@ -65,15 +70,37 @@ export function MermaidDiagram({ chart, darkMode }) {
     const processedLines = lines.map((line, index) => {
       if (index === 0) return line; 
       
-      let l = line;
+      let l = line.trim();
+      if (!l) return null;
+
+      // Handle subgraph ID spaces and formatting
+      if (l.toLowerCase().startsWith('subgraph ')) {
+        const parts = l.split(' ');
+        if (parts.length > 2) {
+          const content = parts.slice(1).join(' ').replace(/"/g, '').replace(/[\[\]]/g, '');
+          const id = content.replace(/[^a-z0-9]/gi, '_');
+          l = `subgraph ${id} ["${content}"]`;
+        }
+      }
+
       // Sanitize reserved keywords used as IDs at line start
       l = l.replace(/^(TD|LR|BT|RL|graph|flowchart|subgraph|end)(\[)/i, 'node_$1$2');
+
+      // Check for standalone text with spaces that isn't a reserved block
+      const isReserved = /^(subgraph|end|style|class|click|linkStyle|title|accTitle|accDescr|note|participant|actor)/i.test(l);
+      const hasBrackets = l.includes('[') || l.includes('(') || l.includes('{');
+      const hasConnector = l.includes('-->') || l.includes('--') || l.includes('-.->') || l.includes('==>');
+      
+      if (!isReserved && !hasBrackets && !hasConnector && l.includes(' ')) {
+        const id = l.replace(/[^a-z0-9]/gi, '_');
+        l = `${id}["${l}"]`;
+      }
 
       // Fix invalid arrow syntax
       l = l.replace(/-->\s*\|([^|]+)\|\s*>/g, '-->|$1|');
       l = l.replace(/--\s*\|([^|]+)\|\s*>/g, '--|$1|');
 
-      // Convert standalone multi-word text to bracketed strings
+      // Convert standalone multi-word text to bracketed strings for parts of a connection
       if (/^[^\[({|]+(?=-->|--|-.->|==>)/.test(l)) {
         l = l.replace(/^([^\[({|]+)(?=-->|--|-.->|==>)/, (match) => {
           const labelText = match.trim();
@@ -93,7 +120,7 @@ export function MermaidDiagram({ chart, darkMode }) {
       }
 
       return l;
-    });
+    }).filter(Boolean);
 
     return processedLines.join('\n');
   };

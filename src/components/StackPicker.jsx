@@ -1,12 +1,12 @@
 export function OptionCard({ icon, name, cost, reason, pros, cons, isSelected, isRecommended, onSelect, darkMode }) {
   return (
     <div onClick={onSelect} style={{
-      background: isSelected ? (darkMode ? "#1e3a8a" : "#f0f6ff") : (darkMode ? "#334155" : "#fff"),
-      border: `2px solid ${isSelected ? "#2563eb" : (darkMode ? "#475569" : "#e8e8ee")}`,
+      background: isSelected ? (darkMode ? "#334155" : "#f0f6ff") : (darkMode ? "#1e293b" : "#fff"),
+      border: `2px solid ${isSelected ? "#2563eb" : (darkMode ? "#334155" : "#e8e8ee")}`,
       borderRadius: "10px", padding: "12px", cursor: "pointer",
-      boxShadow: isSelected ? "0 0 0 3px #2563eb14" : "none",
+      boxShadow: isSelected ? (darkMode ? "0 4px 12px rgba(37, 99, 235, 0.2)" : "0 0 0 3px #2563eb14") : "none",
       display: "flex", flexDirection: "column", gap: "6px",
-      minWidth: 0, overflow: "hidden",
+      minWidth: 0, overflow: "hidden"
     }}>
       {/* Top row: icon + badges */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "6px", flexWrap: "wrap" }}>
@@ -74,7 +74,7 @@ export function OptionCard({ icon, name, cost, reason, pros, cons, isSelected, i
 export function StackCategoryRow({ category, recommended, alternatives, selectedIdx, onSelect, minCardWidth, darkMode }) {
   const alts = alternatives || [];
   return (
-    <div style={{ background: darkMode ? "#1e293b" : "#fafafa", border: "1px solid", borderColor: darkMode ? "#334155" : "#e8e8ee", borderRadius: "12px", padding: "14px", marginBottom: "12px", overflow: "hidden" }}>
+    <div style={{ background: darkMode ? "#0f172a" : "#fafafa", border: "1px solid", borderColor: darkMode ? "#1e293b" : "#e8e8ee", borderRadius: "12px", padding: "14px", marginBottom: "12px", overflow: "hidden" }}>
       <div style={{ fontSize: "10px", fontWeight: 700, color: darkMode ? "#64748b" : "#aaa", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>{category}</div>
       <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(${minCardWidth}px, 1fr))`, gap: "8px" }}>
         <OptionCard icon={recommended.icon} name={recommended.name} cost={recommended.cost} reason={recommended.reason} isSelected={selectedIdx === -1} isRecommended onSelect={() => onSelect(-1)} darkMode={darkMode} />

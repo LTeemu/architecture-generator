@@ -1,14 +1,58 @@
 export const EXAMPLES = [
-  "A real-time collaborative whiteboarding platform for 10,000+ concurrent users with CRDT-based conflict resolution and infinite canvas rendering",
-  "A privacy-first AI medical assistant that processes patient records locally using WebLLM and syncs encrypted metadata to a HIPAA-compliant cloud",
-  "A multi-tenant SaaS e-commerce engine with dynamic schema isolated databases, global CDN edge caching, and automated tax compliance events",
-  "A high-frequency cryptocurrency arbitrage bot capable of executing trades across 20+ exchanges with sub-50ms latency and real-time risk auditing",
-  "A decentralized social network leveraging Zero-Knowledge Proofs for identity verification and IPFS for censorship-resistant media storage",
-  "An automated DevOps platform that uses AI to analyze Kubernetes logs, predict node failures, and trigger self-healing horizontal autoscaling",
-  "A full-stack fintech platform for cross-border payments with real-time currency conversion, anti-fraud ML scoring, and multi-ledger settlement",
-  "A smart city IoT dashboard aggregating millions of sensor heartbeats for traffic optimization, air quality monitoring, and emergency response",
-  "A cloud-native gaming backend for a massive multiplayer RPG with persistent world state, spatial indexing, and low-latency UDP synchronization",
-  "An enterprise-grade document management system with optical character recognition (OCR), automatic PII masking, and cryptographic audit trails"
+  {
+    category: "Big Data & Analytics",
+    icon: "📊",
+    items: [
+      "Real-time data lakehouse that ingests millions of events per second, performs windowed aggregations, handles schema evolution, and supports petabyte-scale ad-hoc SQL queries.",
+      "Global data mesh architecture for federated data governance across multiple business units with automated data quality checks and cataloging.",
+      "Distributed stream processing pipeline for real-time clickstream analysis with exactly-once semantic guarantees and late-arrival data handling."
+    ]
+  },
+  {
+    category: "Cybersecurity & SecOps",
+    icon: "🛡️",
+    items: [
+      "Cloud-native SIEM (Security Information and Event Management) that ingests logs from distributed sources, performs real-time threat detection with ML scoring, and triggers automated incident response.",
+      "Zero-trust network access (ZTNA) gateway that enforces identity-aware proxying, least-privilege access, and continuous authentication for remote workforces.",
+      "Automated vulnerability management platform that orchestrates container scanning, cloud posture assessment, and prioritized remediation workflows."
+    ]
+  },
+  {
+    category: "Platform Engineering",
+    icon: "☁️",
+    items: [
+      "Internal Developer Platform (IDP) that abstracts multi-cloud resource provisioning, provides a service catalog with Golden Paths, and manages automated compliance gate-checks.",
+      "Serverless orchestration engine for long-running workflows with state persistence, automatic retries, and dynamic scaling across multiple cloud regions.",
+      "Private cloud control plane that manages bare-metal provisioning, software-defined networking, and high-availability storage clusters."
+    ]
+  },
+  {
+    category: "Observability & Reliability",
+    icon: "📈",
+    items: [
+      "High-scale distributed tracing and observability mesh that correlates metrics, logs, and traces across thousands of microservices with automated anomaly detection and SLO alerting.",
+      "Chaos engineering platform that orchestrates fault injection experiments, assesses system resilience, and monitors recovery time objectives (RTO) automatically.",
+      "AIOps platform that analyzes historical performance data, predicts potential node failures, and triggers self-healing infrastructure adjustments."
+    ]
+  },
+  {
+    category: "High-Complexity Applications",
+    icon: "🏗️",
+    items: [
+      "Real-time collaborative document editor using CRDTs for conflict resolution, multi-user presence indicators, and Git-backed versioning.",
+      "Multi-tenant SaaS billing and metering platform with usage-based invoicing, tax/VAT automation, and audit-ready financial logs.",
+      "Authoritative multiplayer server for a persistent-world survival game with anti-cheat, latency compensation, and state-syncing across multiple nodes."
+    ]
+  },
+  {
+    category: "Application Software",
+    icon: "📱",
+    items: [
+      "End-to-end encrypted messaging app with push notifications, media sharing, disappearing messages, and multi-device sync.",
+      "Local-first markdown knowledge base with Git-backed versioning, full-text search, backlinks, and encrypted cloud sync.",
+      "Cross-platform field service app with offline-first persistence, background background sync, and conflict resolution."
+    ]
+  }
 ];
 
 export const STEPS = [
@@ -62,10 +106,12 @@ Generate a JSON object with the following structure:
   "architecture": {
     "overview": "string - technical overview of the system. Do NOT mention pricing or budgets.",
     "dataFlow": ["string", "string", "string", "string"],
-    "keyDecisions": ["string", "string"]
+    "keyDecisions": ["string (MUST explain high-level architectural pattern choices)", "string"]
   },
   
-  "mermaidChart": "string - ONLY output raw mermaid.js syntax. CRITICAL: 1. MUST start exactly with 'graph TD'. 2. DO NOT wrap in markdown backticks. 3. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. 4. Node IDs must have no spaces. 5. Create a structured, logical flow between Client, Server, and Database.",
+  "mermaidChart": "string - ONLY output raw mermaid.js syntax. CRITICAL: 1. MUST start exactly with 'graph TD'. 2. DO NOT wrap in markdown backticks. 3. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. 4. Node IDs must be descriptive (e.g., ClientApp, AuthAPI) and have no spaces. 5. Every node must have a descriptive label in [\"brackets\"]. 6. Use subgraphs to group related components into layers (e.g., ClientLayer, APILayer, DataLayer). 7. Create a structured, logical flow between layers.",
+
+  "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
 
   "costBreakdown": [
     { "item": "string", "costEur": "string - ONLY use: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'", "notes": "string" }
@@ -79,7 +125,7 @@ Generate a JSON object with the following structure:
 
   "scalingPath": "string - CRITICAL: Provide actual engineering progression steps consistent with maxConcurrentUsersPerInstance. If 1, focus on LOCAL growth. If >1, focus on CLOUD.",
 
-  "codingAgentPrompt": "string - A highly detailed, structured Markdown prompt for an AI coding agent (like Cursor). MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Suggested Folder Structure, # Core Features, # Agent Instructions). 'Agent Instructions' MUST provide site-specific scaffolding advice. CRITICAL: Do NOT add generic 'production-ready', 'cloud scaling', or 'CI/CD' unless the project nature explicitly requires it. Keep advice strictly proportional to the app's scope. DO NOT mention pricing or specific user counts."
+  "codingAgentPrompt": "string - A highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Suggested Folder Structure, # Core Features, # Agent Instructions). include an # Architectural Patterns section if applicable. CRITICAL: You MUST use ONLY the 'recommended' technologies you selected in the 'stack' section. DO NOT list alternatives or options in this prompt. Keep advice strictly proportional to the app's scope. DO NOT mention pricing."
 }
 `;
 
@@ -97,9 +143,10 @@ Return this JSON structure:
     "maxConcurrentUsersPerInstance": 1,
     "overview": "3-5 sentences technical overview. Do NOT mention pricing or budgets.",
     "dataFlow": ["step 1", "step 2", "step 3", "step 4"],
-    "keyDecisions": ["decision 1", "decision 2"]
+    "keyDecisions": ["Explain high-level architectural pattern choices", "Second technical decision"]
   },
-  "mermaidChart": "string - ONLY output raw mermaid.js syntax starting with 'graph TD'. DO NOT wrap in markdown backticks. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. Node IDs must have no spaces.",
+  "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
+  "mermaidChart": "string - ONLY output raw mermaid.js syntax starting with 'graph TD'. DO NOT wrap in markdown backticks. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. Use descriptive IDs and subgraphs for layers. ALL nodes must have text labels in brackets.",
   "costBreakdown": [
     { "item": "service", "costEur": "Free", "notes": "ONLY use categories: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'" }
   ],
@@ -108,6 +155,6 @@ Return this JSON structure:
     { "users": 10000, "costCategory": "Moderate", "note": "Technical limit (Local: indexing speed. Cloud: API throughput)." }
   ],
   "scalingPath": "Technical roadmap (CRITICAL: Match maxConcurrentUsersPerInstance logic).",
-  "codingAgentPrompt": "Highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings. Provide domain-specific scaffolding advice. CRITICAL: Do NOT add generic 'production-ready' or 'cloud scaling' unless explicitly needed. Keep advice proportional to scope."
+  "codingAgentPrompt": "Highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings. Include an # Architectural Patterns section if applicable. CRITICAL: You MUST use ONLY the specific technologies provided in the User's 'Selected tech stack'. DO NOT offer alternatives or choices in this prompt. Be definitive and provide domain-specific scaffolding advice."
 }
 `;

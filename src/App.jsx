@@ -36,7 +36,7 @@ export default function App() {
   const { history, addToHistory, updateHistory, clearHistory } = useHistory();
 
   useEffect(() => {
-    document.body.style.background = darkMode ? "#020617" : "#cbd5e1";
+    document.body.style.background = darkMode ? "#020617" : "#f1f5f9";
     return () => { document.body.style.background = ""; };
   }, [darkMode]);
 
@@ -211,16 +211,16 @@ export default function App() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: darkMode ? "#0f172a" : "#f2f2f5",
+      background: darkMode ? "#020617" : "#f1f5f9",
       fontFamily: "'Sora', sans-serif",
-      color: darkMode ? "#e2e8f0" : "#222"
+      color: darkMode ? "#f8fafc" : "#1e293b"
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300..800&family=JetBrains+Mono:wght@400..700&display=swap');
         * { box-sizing: border-box; }
         .gen-btn { }
         .gen-btn:hover:not(:disabled) { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 16px #2563eb33 !important; }
-        .pill:hover { background: ${darkMode ? "#1e293b" : "#ebebf0"} !important; color: #2563eb !important; border-color: #bcd0f8 !important; cursor: pointer; }
+        .pill:hover { background: ${darkMode ? "#334155" : "#e2e8f0"} !important; color: ${darkMode ? "#60a5fa" : "#1d4ed8"} !important; border-color: ${darkMode ? "#475569" : "#cbd5e1"} !important; cursor: pointer; }
         .fade-in { animation: fadeUp 0.4s ease forwards; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -232,10 +232,9 @@ export default function App() {
         
         /* Dark mode overrides */
         ${darkMode ? `
-          input, textarea { background: #1e293b !important; color: #f8fafc !important; border-color: #334155 !important; }
-          .section-card { background: #1e293b !important; border-color: #334155 !important; }
+          input, textarea { color: #f8fafc !important; border-color: #1e293b !important; }
           .text-muted { color: #94a3b8 !important; }
-          .bg-muted { background: #1e293b !important; }
+          .bg-muted { background: #0f172a !important; }
         ` : ""}
       `}</style>
 

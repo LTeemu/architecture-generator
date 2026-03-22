@@ -6,14 +6,14 @@ export function Section({ title, badge, children, accentColor = "#2563eb", updat
   return (
     <div style={{ 
       border: "1px solid", 
-      borderColor: darkMode ? "#334155" : "#e8e8ee", 
-      borderRadius: "12px", 
+      borderColor: darkMode ? "#1e293b" : "#e2e8f0", 
+      borderRadius: "14px", 
       overflow: "hidden", 
-      marginBottom: "14px", 
-      background: darkMode ? "#1e293b" : "#fff", 
-      boxShadow: "0 1px 4px rgba(0,0,0,0.05)" 
+      marginBottom: "16px", 
+      background: darkMode ? "#0f172a" : "#fff", 
+      boxShadow: "0 4px 12px rgba(0,0,0,0.1)" 
     }}>
-      <div style={{ display: "flex", alignItems: "center", padding: "0 18px", borderBottom: open ? "1px solid" : "none", borderBottomColor: darkMode ? "#334155" : "#f0f0f4" }}>
+      <div style={{ display: "flex", alignItems: "center", padding: "0 18px", borderBottom: open ? "1px solid" : "none", borderBottomColor: darkMode ? "#1e293b" : "#f1f5f9" }}>
         <button onClick={() => setOpen(o => !o)} style={{ flex: 1, display: "flex", alignItems: "center", gap: "10px", padding: "14px 0", background: "transparent", border: "none", cursor: "pointer", textAlign: "left", minWidth: 0 }}>
           <span style={{ fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", background: accentColor + "14", color: accentColor, border: `1px solid ${accentColor}30`, padding: "2px 9px", borderRadius: "4px", letterSpacing: "0.08em", fontWeight: 700, textTransform: "uppercase", flexShrink: 0 }}>{badge}</span>
           <span style={{ color: darkMode ? "#fff" : "#111", fontWeight: 600, fontSize: "14px", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</span>

@@ -55,13 +55,14 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
               padding: "0 10px", 
               fontSize: "14px", 
               border: "1px solid", 
-              borderColor: darkMode ? "#334155" : "#e4e4ea", 
+              borderColor: darkMode ? "#0f172a" : "#e2e8f0", 
               borderRadius: "6px", 
-              background: darkMode ? "#334155" : "#fff", 
+              background: darkMode ? "#1e293b" : "#f1f5f9", 
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              color: darkMode ? "#f8fafc" : "#1e293b"
             }}
           >
             {darkMode ? "🌙" : "☀️"}
@@ -75,13 +76,14 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 padding: "0 12px", 
                 fontSize: "12px", 
                 border: "1px solid", 
-                borderColor: darkMode ? "#334155" : "#e4e4ea", 
+                borderColor: darkMode ? "#0f172a" : "#e2e8f0", 
                 borderRadius: "6px", 
-                background: darkMode ? "#334155" : "#fff", 
-                color: darkMode ? "#f8fafc" : "#333",
+                background: darkMode ? "#1e293b" : "#f1f5f9", 
+                color: darkMode ? "#f8fafc" : "#1e293b",
                 cursor: "pointer", 
                 fontFamily: "'Sora', sans-serif",
                 display: "flex",
+                fontWeight: 600,
                 alignItems: "center"
               }}
             >
@@ -94,16 +96,16 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 top: "calc(100% + 12px)", 
                 right: 0, 
                 width: "300px", 
-                background: darkMode ? "#1e293b" : "#fff", 
+                background: darkMode ? "#0f172a" : "#fff", 
                 border: "1px solid", 
-                borderColor: darkMode ? "#334155" : "#e4e4ea", 
-                borderRadius: "0 0 12px 12px", 
+                borderColor: darkMode ? "#334155" : "#e2e8f0", 
+                borderRadius: "12px", 
                 boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", 
                 maxHeight: "400px", 
                 overflowY: "auto", 
-                padding: "12px" 
+                padding: "16px" 
               }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
                   <h3 style={{ fontSize: "10px", fontWeight: 700, margin: 0, color: darkMode ? "#64748b" : "#999", textTransform: "uppercase", letterSpacing: "0.1em" }}>Recent Generations</h3>
                   {history.length > 0 && (
                     <button 
@@ -124,18 +126,18 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                         onClick={() => { onHistorySelect(item); setShowHistory(false); }}
                         style={{ 
                           textAlign: "left", 
-                          padding: "8px", 
+                          padding: "10px", 
                           border: "1px solid", 
                           borderColor: darkMode ? "#334155" : "#f2f2f5", 
-                          borderRadius: "6px", 
-                          background: darkMode ? "#334155" : "#fafafa", 
+                          borderRadius: "8px", 
+                          background: darkMode ? "#1e293b" : "#fafafa", 
                           cursor: "pointer" 
                         }}
-                        onMouseEnter={e => e.currentTarget.style.background = darkMode ? "#312e81" : "#f0f6ff"}
-                        onMouseLeave={e => e.currentTarget.style.background = darkMode ? "#334155" : "#fafafa"}
+                        onMouseEnter={e => e.currentTarget.style.background = darkMode ? "#334155" : "#f0f6ff"}
+                        onMouseLeave={e => e.currentTarget.style.background = darkMode ? "#1e293b" : "#fafafa"}
                       >
                         <div style={{ fontSize: "12px", fontWeight: 600, color: darkMode ? "#f8fafc" : "#333", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.description}</div>
-                        <div style={{ fontSize: "10px", color: "#999" }}>{new Date(item.timestamp).toLocaleDateString()}</div>
+                        <div style={{ fontSize: "10px", color: darkMode ? "#94a3b8" : "#999" }}>{new Date(item.timestamp).toLocaleDateString()}</div>
                       </button>
                     ))}
                   </div>
@@ -151,13 +153,13 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
             onChange={e => setApiKey(e.target.value)}
             style={{ 
               height: "32px",
-              padding: "0 10px", 
+              padding: "0 12px", 
               fontSize: "12px", 
               border: "1px solid", 
-              borderColor: darkMode ? "rgba(148, 163, 184, 0.2)" : "rgba(0,0,0,0.1)", 
-              borderRadius: "8px", 
-              background: darkMode ? "rgba(15, 23, 42, 0.5)" : "rgba(255,255,255,0.5)",
-              color: darkMode ? "#f8fafc" : "#111",
+              borderColor: darkMode ? "#0f172a" : "#e2e8f0", 
+              borderRadius: "6px", 
+              background: darkMode ? "#1e293b" : "#f1f5f9",
+              color: darkMode ? "#f8fafc" : "#1e293b",
               width: width > 500 ? "200px" : "120px", 
               fontFamily: "'JetBrains Mono', monospace",
               outline: "none",
