@@ -78,9 +78,10 @@ export function StackCategoryRow({ category, recommended, alternatives, selected
       <div style={{ fontSize: "10px", fontWeight: 700, color: darkMode ? "#64748b" : "#aaa", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>{category}</div>
       <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(${minCardWidth}px, 1fr))`, gap: "8px" }}>
         <OptionCard icon={recommended.icon} name={recommended.name} cost={recommended.cost} reason={recommended.reason} isSelected={selectedIdx === -1} isRecommended onSelect={() => onSelect(-1)} darkMode={darkMode} />
-        {alts.map((alt, i) => (
-          <OptionCard key={i} icon={alt.icon} name={alt.name} cost={alt.cost} pros={alt.pros} cons={alt.cons} isSelected={selectedIdx === i} onSelect={() => onSelect(i)} darkMode={darkMode} />
-        ))}
+        {alts.map((alt, i) => {
+          if (!alt || !alt.name || alt.name.includes("2nd alternative") || alt.name.includes("3rd alternative") || alt.name.includes("string -")) return null;
+          return <OptionCard key={i} icon={alt.icon} name={alt.name} cost={alt.cost} pros={alt.pros} cons={alt.cons} isSelected={selectedIdx === i} onSelect={() => onSelect(i)} darkMode={darkMode} />
+        })}
       </div>
     </div>
   );

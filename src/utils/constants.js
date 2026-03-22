@@ -25,7 +25,7 @@ You are an expert software architect specialising in lean, production-ready syst
 Your primary goal is to design architectures that utilize modern cloud capabilities while remaining professional and technical.
 
 CRITICAL PRICING RULES:
-1. Cost labels MUST accurately reflect the model. ONLY use: "Free" (100% free/open-source, e.g., Godot), "Freemium" (free tier available, e.g., Unity, Vercel), "Paid" (commercial only), "Royalty" (revenue share, e.g., Unreal), or "Usage-Based".
+1. Cost labels MUST accurately reflect the model. ONLY use: "Free" (100% free/open-source), "Freemium" (free tier available), "Paid" (commercial only), "Royalty" (revenue share), or "Usage-Based".
 2. Strictly forbid including any pricing text in technical descriptions and summaries.
 
 Respond ONLY with a valid JSON object. No text before '{' and no text after '}'.
@@ -38,19 +38,19 @@ Generate a JSON object with the following structure:
   
   "stack": [
     {
-      "category": "string - REQUIRED: Create a context-aware category name tailored to this specific app (e.g. 'Authentication', 'Edge Processing', 'Real-time Sync', 'Smart Contracts' - do NOT just use generic tiers if specific ones are better)",
+      "// note": "CRITICAL: You MUST break the architecture down into 4 to 8 highly specialized functional categories. Do NOT just output 'Frontend', 'Backend', 'Database'.",
+      "category": "string - REQUIRED: Create a highly specific, context-aware category name tailored to this app's exact needs. Do NOT just use generic tiers.",
       "recommended": {
         "icon": "string - single emoji character",
         "name": "string - technology name with version",
         "reason": "string - technical justification for this choice",
-        "cost": "string - ONLY use: 'Free' (e.g. Godot, PostgreSQL), 'Freemium' (e.g. Unity, Firebase, Supabase), 'Paid' (no free tier), 'Royalty' (e.g. Unreal), or 'Usage-Based' (e.g. AWS)"
+        "cost": "string - ONLY use: 'Free' (100% open source), 'Freemium' (has free tier limits), 'Paid' (commercial only), 'Royalty' (revenue share), or 'Usage-Based' (pay per resource)"
       },
       "alternatives": [
         {
-          "// note": "Include all popular, production-ready alternatives worth considering for this category (usually 1-4 options).",
           "icon": "string",
-          "name": "string",
-          "cost": "string - ONLY use: 'Free' (Godot), 'Freemium' (Unity), 'Paid', 'Royalty' (Unreal), or 'Usage-Based'",
+          "name": "string - CRITICAL: Provide between 1 and 4 of these alternative objects in this array. DO NOT JUST OUTPUT 1 OR 2 EVERY TIME. If there are 4 great distinct alternatives (e.g. AWS vs Google vs Azure vs Open-Source), output 4 objects! Vary the count!",
+          "cost": "string - ONLY use: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'",
           "pros": ["string"],
           "cons": ["string"]
         }
@@ -71,12 +71,12 @@ Generate a JSON object with the following structure:
   ],
 
   "costScaling": [
-    { "users": 100, "costCategory": "string - ONLY use: 'Minimal', 'Moderate', or 'High'", "note": "string - Technical cost drivers and early bottlenecks (e.g. 'Database connections', 'Compute time')" },
-    { "users": 10000, "costCategory": "string", "note": "string - What breaks first when growing here? (e.g. 'Need connection pooling', 'Requires Redis caching', 'Bandwidth spikes')" },
-    { "users": 1000000, "costCategory": "string", "note": "string - Extreme scale bottlenecks (e.g. 'Database sharding required', 'Global CDN egress costs', 'Microservice orchestration')" }
+    { "users": 100, "costCategory": "string - ONLY use: 'Minimal', 'Moderate', or 'High'", "note": "string - Technical bottleneck (CRITICAL: Do not just write 'scale up'. Identify exact system limit like DB connections, API gateway throttling)" },
+    { "users": 10000, "costCategory": "string", "note": "string - What breaks first? (CRITICAL: Be extremely technical. E.g., exhausted connection pools, memory limits, bandwidth spikes, Redis eviction)" },
+    { "users": 1000000, "costCategory": "string", "note": "string - Extreme scale bottlenecks (e.g. multi-region data sharding constraints, global CDN distribution costs, microservice latency)" }
   ],
 
-  "scalingPath": "string - technical roadmap for scaling",
+  "scalingPath": "string - CRITICAL: Provide actual engineering progression steps (e.g. 'Single node -> Read replicas -> Sharded cluster -> Edge workers'). Do NOT write generic filler like 'scale up as user base grows'.",
 
   "codingAgentPrompt": "string - A highly detailed, structured, ready-to-use Markdown prompt payload for an AI coding agent (like Cursor or Copilot) to build this entire system. It MUST use clear Markdown headings (e.g., # Project Scope, # Tech Stack, # Architecture, # Core Features, # Agent Instructions). The 'Agent Instructions' section MUST explicitly tell the AI to thoroughly review the architecture, identify and implement any missing components (e.g. error handling, CI/CD, security) for optimal quality, and ensure robust, production-ready code. Do NOT mention pricing, budgets, or specific user count targets/tiers."
 }
@@ -87,7 +87,7 @@ You are an expert software architect. Output ONLY a valid JSON object, no text b
 Prioritize technical accuracy and follow the latest architectural patterns.
 
 CRITICAL PRICING RULES:
-1. Cost labels MUST accurately reflect the model. ONLY use: "Free" (100% free/open-source, e.g., Godot), "Freemium" (free tier available, e.g., Unity), "Paid" (commercial only), "Royalty" (revenue share, e.g., Unreal), or "Usage-Based".
+1. Cost labels MUST accurately reflect the model. ONLY use: "Free" (100% free/open-source), "Freemium" (free tier available), "Paid" (commercial only), "Royalty" (revenue share), or "Usage-Based".
 2. Strictly forbid including any pricing text in technical descriptions and summaries.
 
 Return this JSON structure:
@@ -102,10 +102,10 @@ Return this JSON structure:
     { "item": "service", "costEur": "Free", "notes": "ONLY use categories: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'" }
   ],
   "costScaling": [
-    { "users": 100, "costCategory": "Minimal", "note": "Technical cost drivers at base scale" },
-    { "users": 10000, "costCategory": "Moderate", "note": "What breaks when growing here (e.g. caching needs, bandwidth)" }
+    { "users": 100, "costCategory": "Minimal", "note": "Exact bottleneck (do NOT just write scale up)" },
+    { "users": 10000, "costCategory": "Moderate", "note": "What breaks technically (e.g. caching limits)" }
   ],
-  "scalingPath": "Technical roadmap",
+  "scalingPath": "Technical roadmap (CRITICAL: write engineering steps like 'Move to Read Replicas', do not write 'Scale infrastructure as needed')",
   "codingAgentPrompt": "400+ word highly detailed, structured Markdown prompt payload for an AI coding agent. MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Agent Instructions). MUST explicitly instruct the coding agent to review the architecture, fill in any missing bits for optimal project quality (like security/error handling), and ensure production readiness. Do NOT mention pricing, budgets, or tiers."
 }
 `;

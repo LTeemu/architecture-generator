@@ -28,8 +28,8 @@ export default function App() {
   const [committedSelections, setCommittedSelections] = useState({});
   const [hasPendingChanges, setHasPendingChanges] = useState(false);
   const [currentHistoryId, setCurrentHistoryId] = useState(null);
-  const [darkMode, setDarkMode ] = usePersistence("archgen_dark_mode", false);
-  
+  const [darkMode, setDarkMode] = usePersistence("archgen_dark_mode", false);
+
   const resultRef = useRef(null);
   const abortRef = useRef(null);
 
@@ -61,6 +61,7 @@ export default function App() {
     const token = {};
     abortRef.current = token;
     setUpdating(true);
+    setError(null);
 
     const stackSummary = getStackSummary(res, sels);
 
@@ -81,7 +82,12 @@ export default function App() {
         })
       });
       if (token !== abortRef.current) return;
-      if (!response.ok) throw new Error("API Request Failed");
+      if (!response.ok) {
+        if (response.status === 401) throw new Error("Invalid API key.");
+        if (response.status === 429) throw new Error("Rate limit exceeded.");
+        if (response.status >= 500) throw new Error("AI provider server error.");
+        throw new Error(`API Request Failed (${response.status})`);
+      }
       const data = await response.json();
       const parsed = extractJSON(data.choices?.[0]?.message?.content);
       if (parsed && token === abortRef.current) {
@@ -91,7 +97,11 @@ export default function App() {
           updateHistory(currentHistoryId, { dynData: parsed, selections: sels });
         }
       }
-    } catch { } finally { if (token === abortRef.current) setUpdating(false); }
+    } catch (e) {
+      if (token === abortRef.current) setError(e.message);
+    } finally {
+      if (token === abortRef.current) setUpdating(false);
+    }
   }, [submittedDescription, description, apiKey, currentHistoryId, updateHistory]);
 
   const selectionsChanged = (current, committed, stackLen) => {
@@ -142,25 +152,30 @@ export default function App() {
           ]
         }),
       });
-      if (!response.ok) throw new Error(`API error ${response.status}`);
+      if (!response.ok) {
+        if (response.status === 401) throw new Error("Invalid API key.");
+        if (response.status === 429) throw new Error("Rate limit exceeded.");
+        if (response.status >= 500) throw new Error("AI provider server error.");
+        throw new Error(`API error ${response.status}`);
+      }
       const data = await response.json();
       const parsed = extractJSON(data.choices?.[0]?.message?.content);
-      if (!parsed) { setRawError(data.choices?.[0]?.message?.content); throw new Error("Invalid JSON"); }
-      
+      if (!parsed) { setRawError(data.choices?.[0]?.message?.content); throw new Error("AI returned invalid format."); }
+
       setResult(parsed);
       setDynData(parsed);
       setSubmittedDescription(description);
       const newId = Date.now();
       setCurrentHistoryId(newId);
-      addToHistory({ 
-        id: newId, 
-        description, 
-        result: parsed, 
-        dynData: parsed, 
+      addToHistory({
+        id: newId,
+        description,
+        result: parsed,
+        dynData: parsed,
         selections: {},
-        timestamp: new Date().toISOString() 
+        timestamp: new Date().toISOString()
       });
-      
+
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     } catch (e) {
       setError(e.message);
@@ -182,10 +197,10 @@ export default function App() {
   };
 
   return (
-    <div style={{ 
-      minHeight: "100vh", 
-      background: darkMode ? "#0f172a" : "#f2f2f5", 
-      fontFamily: "'Sora', sans-serif", 
+    <div style={{
+      minHeight: "100vh",
+      background: darkMode ? "#0f172a" : "#f2f2f5",
+      fontFamily: "'Sora', sans-serif",
       color: darkMode ? "#e2e8f0" : "#222"
     }}>
       <style>{`
@@ -211,11 +226,11 @@ export default function App() {
         ` : ""}
       `}</style>
 
-      <Header 
-        apiKey={apiKey} 
-        setApiKey={setApiKey} 
-        width={width} 
-        history={history} 
+      <Header
+        apiKey={apiKey}
+        setApiKey={setApiKey}
+        width={width}
+        history={history}
         onHistorySelect={loadFromHistory}
         clearHistory={clearHistory}
         darkMode={darkMode}
@@ -224,23 +239,23 @@ export default function App() {
       <Hero width={width} darkMode={darkMode} />
 
       <main style={{ maxWidth: "100%", margin: "0 auto", padding: "28px 16px 80px" }}>
-        <InputSection 
-          description={description} 
-          setDescription={setDescription} 
-          loading={loading} 
-          handleGenerate={handleGenerate} 
+        <InputSection
+          description={description}
+          setDescription={setDescription}
+          loading={loading}
+          handleGenerate={handleGenerate}
           darkMode={darkMode}
         />
 
         {loading && (
-          <div style={{ 
-            background: darkMode ? "#1e293b" : "#fff", 
+          <div style={{
+            background: darkMode ? "#1e293b" : "#fff",
             border: "1px solid",
-            borderColor: darkMode ? "#334155" : "#e4e4ea", 
-            borderRadius: "14px", 
-            padding: "36px 20px", 
-            textAlign: "center", 
-            marginBottom: "16px" 
+            borderColor: darkMode ? "#334155" : "#e4e4ea",
+            borderRadius: "14px",
+            padding: "36px 20px",
+            textAlign: "center",
+            marginBottom: "16px"
           }}>
             <div className="dot-pulse" style={{ marginBottom: "16px" }}><span /><span /><span /></div>
             <p style={{ color: darkMode ? "#94a3b8" : "#999", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", margin: 0 }}>{STEPS[loadingStep]}</p>
@@ -248,26 +263,26 @@ export default function App() {
         )}
 
         {error && (
-          <div style={{ 
-            background: darkMode ? "#450a0a" : "#fff5f5", 
+          <div style={{
+            background: darkMode ? "#450a0a" : "#fff5f5",
             border: "1px solid",
-            borderColor: darkMode ? "#991b1b" : "#fecaca", 
-            borderRadius: "10px", 
-            padding: "14px 18px", 
-            marginBottom: "16px" 
+            borderColor: darkMode ? "#991b1b" : "#fecaca",
+            borderRadius: "10px",
+            padding: "14px 18px",
+            marginBottom: "16px"
           }}>
             <p style={{ color: darkMode ? "#fca5a5" : "#dc2626", fontSize: "14px", margin: rawError ? "0 0 10px" : 0 }}>⚠ {error}</p>
           </div>
         )}
 
-        <ResultsSection 
-          result={result} 
-          dynData={dynData} 
-          updating={updating} 
-          stackSelections={stackSelections} 
-          handleSelect={handleSelect} 
-          stackCols={stackCols} 
-          hasPendingChanges={hasPendingChanges} 
+        <ResultsSection
+          result={result}
+          dynData={dynData}
+          updating={updating}
+          stackSelections={stackSelections}
+          handleSelect={handleSelect}
+          stackCols={stackCols}
+          hasPendingChanges={hasPendingChanges}
           handleUpdateSections={handleUpdateSections}
           resultRef={resultRef}
           darkMode={darkMode}
