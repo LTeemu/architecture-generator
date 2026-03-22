@@ -201,7 +201,7 @@ ${codingPrompt}
             <div style={{ background: darkMode ? "#0f172a" : "#f8fbfc", border: "1px solid", borderColor: darkMode ? "#334155" : "#cce8f4", borderRadius: "10px", overflow: "hidden" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 13px", background: darkMode ? "#1e293b" : "#f0f8ff", borderBottom: "1px solid", borderBottomColor: darkMode ? "#334155" : "#cce8f4", gap: "10px", flexWrap: "wrap" }}>
                 <span style={{ fontSize: "11px", color: darkMode ? "#22d3ee" : "#0891b2", fontFamily: "'JetBrains Mono', monospace", fontWeight: 600 }}>
-                  PASTE INTO: Claude Code · Cursor · Copilot
+                  PASTE INTO: Claude Code · Antigravity · Cursor · Copilot
                 </span>
                 <CopyButton text={codingPrompt} label="Copy Prompt" darkMode={darkMode} />
               </div>

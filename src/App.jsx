@@ -15,6 +15,7 @@ export default function App() {
   const stackCols = width < 500 ? 1 : 2;
 
   const [description, setDescription] = useState("");
+  const [submittedDescription, setSubmittedDescription] = useState("");
   const [apiKey, setApiKey] = usePersistence("archgen_groq_key", "");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -75,7 +76,7 @@ export default function App() {
           temperature: 0.1,
           messages: [
             { role: "system", content: SYSTEM_PROMPT_REGEN },
-            { role: "user", content: `App: ${description}\n\nSelected tech stack:\n${stackSummary}\n\nGenerate architecture, mermaid chart, costs, scaling path and coding prompt for this exact stack.` }
+            { role: "user", content: `App: ${submittedDescription || description}\n\nSelected tech stack:\n${stackSummary}\n\nGenerate architecture, mermaid chart, costs, scaling path and coding prompt for this exact stack.` }
           ]
         })
       });
@@ -91,7 +92,7 @@ export default function App() {
         }
       }
     } catch { } finally { if (token === abortRef.current) setUpdating(false); }
-  }, [description, apiKey, currentHistoryId, updateHistory]);
+  }, [submittedDescription, description, apiKey, currentHistoryId, updateHistory]);
 
   const selectionsChanged = (current, committed, stackLen) => {
     for (let i = 0; i < stackLen; i++) {
@@ -148,6 +149,7 @@ export default function App() {
       
       setResult(parsed);
       setDynData(parsed);
+      setSubmittedDescription(description);
       const newId = Date.now();
       setCurrentHistoryId(newId);
       addToHistory({ 
@@ -170,6 +172,7 @@ export default function App() {
   const loadFromHistory = (item) => {
     setCurrentHistoryId(item.id);
     setDescription(item.description);
+    setSubmittedDescription(item.description);
     setResult(item.result);
     setDynData(item.dynData || item.result);
     setStackSelections(item.selections || {});

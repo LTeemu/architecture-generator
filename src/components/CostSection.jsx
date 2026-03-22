@@ -3,15 +3,15 @@ export function CostScalingTable({ costScaling, costBreakdown, darkMode }) {
     <div style={{ marginTop: "14px" }}>
       {costScaling && costScaling.length > 0 && (
         <div style={{ marginBottom: "20px" }}>
-          <div style={{ fontSize: "10px", fontWeight: 700, color: "#16a34a", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>Cost scaling (EUR / month)</div>
+          <div style={{ fontSize: "10px", fontWeight: 700, color: "#16a34a", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>Cost Scaling Profiles</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))", gap: "8px" }}>
             {costScaling.map((tier, i) => (
               <div key={i} style={{ background: darkMode ? "#1e293b" : "#f9fafb", border: "1px solid", borderColor: darkMode ? "#334155" : "#e8e8ee", borderRadius: "10px", padding: "12px", textAlign: "center" }}>
                 <div style={{ fontSize: "11px", color: darkMode ? "#64748b" : "#aaa", fontFamily: "'JetBrains Mono', monospace", marginBottom: "4px", textTransform: "uppercase" }}>
                   {tier.users >= 1000000 ? `${tier.users / 1000000}M` : tier.users >= 1000 ? `${tier.users / 1000}k` : tier.users} users
                 </div>
-                <div style={{ fontSize: "18px", fontWeight: 800, color: tier.eurPerMonth === 0 ? "#16a34a" : (darkMode ? "#f8fafc" : "#111"), letterSpacing: "-0.03em", wordBreak: "break-word" }}>
-                  {tier.eurPerMonth === 0 ? "Free" : `€${tier.eurPerMonth}`}
+                <div style={{ fontSize: "18px", fontWeight: 800, color: (tier.costCategory === "Minimal" || tier.costCategory === "Free" || tier.eurPerMonth === 0) ? "#16a34a" : (darkMode ? "#f8fafc" : "#111"), letterSpacing: "-0.03em", wordBreak: "break-word" }}>
+                  {tier.costCategory || (tier.eurPerMonth === 0 ? "Free" : `€${tier.eurPerMonth}`)}
                 </div>
                 {tier.note && <div style={{ fontSize: "10px", color: darkMode ? "#94a3b8" : "#bbb", marginTop: "4px", lineHeight: "1.4" }}>{tier.note}</div>}
               </div>

@@ -5,13 +5,15 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
 
   return (
     <div style={{ 
-      background: darkMode ? "#1e293b" : "#fff", 
+      background: darkMode ? "rgba(15, 23, 42, 0.75)" : "rgba(255, 255, 255, 0.85)", 
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
       borderBottom: "1px solid", 
-      borderColor: darkMode ? "#334155" : "#e4e4ea", 
-      padding: "0 16px", 
+      borderColor: darkMode ? "rgba(51, 65, 85, 0.5)" : "rgba(228, 228, 234, 0.5)", 
+      padding: "0 24px", 
       position: "sticky", 
       top: 0, 
-      zIndex: 100 
+      zIndex: 100
     }}>
       <div style={{ maxWidth: "100%", margin: "0 auto", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
@@ -25,11 +27,8 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
           <span style={{ 
             fontWeight: 900, 
             fontSize: "18px", 
-            color: darkMode ? "#fff" : "#1e40af", 
-            letterSpacing: "-0.04em", 
-            background: darkMode ? "none" : "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)",
-            WebkitBackgroundClip: darkMode ? "padding-box" : "text",
-            WebkitTextFillColor: darkMode ? "initial" : "transparent"
+            color: darkMode ? "#60a5fa" : "#2563eb", 
+            letterSpacing: "-0.04em"
           }}>ArchGen</span>
         </div>
 
@@ -83,9 +82,9 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
               padding: "0 10px", 
               fontSize: "12px", 
               border: "1px solid", 
-              borderColor: darkMode ? "#334155" : "#e4e4ea", 
-              borderRadius: "6px", 
-              background: darkMode ? "#0f172a" : "#fff",
+              borderColor: darkMode ? "rgba(148, 163, 184, 0.2)" : "rgba(0,0,0,0.1)", 
+              borderRadius: "8px", 
+              background: darkMode ? "rgba(15, 23, 42, 0.5)" : "rgba(255,255,255,0.5)",
               color: darkMode ? "#f8fafc" : "#111",
               width: width > 500 ? "200px" : "120px", 
               fontFamily: "'JetBrains Mono', monospace",
