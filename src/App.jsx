@@ -46,6 +46,13 @@ export default function App() {
     return () => clearInterval(iv);
   }, [loading]);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const getStackSummary = (res, sels) => {
     if (!res?.stack) return "";
     return res.stack.map((cat, i) => {
@@ -56,7 +63,7 @@ export default function App() {
   };
 
   const regenerateAll = useCallback(async (res, sels) => {
-    if (!res) return;
+    if (!res) return false;
     if (abortRef.current) abortRef.current = false;
     const token = {};
     abortRef.current = token;
@@ -81,7 +88,7 @@ export default function App() {
           ]
         })
       });
-      if (token !== abortRef.current) return;
+      if (token !== abortRef.current) return false;
       if (!response.ok) {
         if (response.status === 401) throw new Error("Invalid API key.");
         if (response.status === 429) throw new Error("Rate limit exceeded.");
@@ -96,9 +103,12 @@ export default function App() {
         if (currentHistoryId) {
           updateHistory(currentHistoryId, { dynData: parsed, selections: sels });
         }
+        return true;
       }
+      return false;
     } catch (e) {
       if (token === abortRef.current) setError(e.message);
+      return false;
     } finally {
       if (token === abortRef.current) setUpdating(false);
     }
@@ -119,10 +129,12 @@ export default function App() {
     });
   };
 
-  const handleUpdateSections = () => {
-    setHasPendingChanges(false);
-    setCommittedSelections({ ...stackSelections });
-    regenerateAll(result, stackSelections);
+  const handleUpdateSections = async () => {
+    const success = await regenerateAll(result, stackSelections);
+    if (success) {
+      setHasPendingChanges(false);
+      setCommittedSelections({ ...stackSelections });
+    }
   };
 
   const handleGenerate = async () => {
@@ -216,6 +228,7 @@ export default function App() {
         .dot-pulse span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2563eb; margin: 0 3px; animation: dotPulse 1.4s ease-in-out infinite; }
         .dot-pulse span:nth-child(2) { animation-delay: 0.2s; } .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes dotPulse { 0%,80%,100% { transform: scale(0.55); opacity: 0.35; } 40% { transform: scale(1); opacity: 1; } }
+        @keyframes toastCountdown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 62.83; } }
         
         /* Dark mode overrides */
         ${darkMode ? `
@@ -262,18 +275,7 @@ export default function App() {
           </div>
         )}
 
-        {error && (
-          <div style={{
-            background: darkMode ? "#450a0a" : "#fff5f5",
-            border: "1px solid",
-            borderColor: darkMode ? "#991b1b" : "#fecaca",
-            borderRadius: "10px",
-            padding: "14px 18px",
-            marginBottom: "16px"
-          }}>
-            <p style={{ color: darkMode ? "#fca5a5" : "#dc2626", fontSize: "14px", margin: rawError ? "0 0 10px" : 0 }}>⚠ {error}</p>
-          </div>
-        )}
+        {/* Inline error replaced by Toast */}
 
         <ResultsSection
           result={result}
@@ -288,6 +290,57 @@ export default function App() {
           darkMode={darkMode}
         />
       </main>
+
+      {/* Toast Notification */}
+      {error && (
+        <div className="fade-in" style={{
+          position: "fixed",
+          bottom: "24px",
+          right: "24px",
+          background: darkMode ? "#450a0a" : "#fff5f5",
+          border: "1px solid",
+          borderColor: darkMode ? "#991b1b" : "#fecaca",
+          borderRadius: "10px",
+          padding: "16px 20px",
+          boxShadow: "0 10px 25px -5px rgba(0,0,0,0.2), 0 8px 10px -6px rgba(0,0,0,0.1)",
+          zIndex: 9999,
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          maxWidth: "400px"
+        }}>
+          <p style={{ color: darkMode ? "#fca5a5" : "#dc2626", fontSize: "14px", margin: 0, fontWeight: 500 }}>
+            ⚠ {error}
+          </p>
+          <button 
+            onClick={() => setError(null)}
+            style={{
+              background: "transparent", border: "none", color: darkMode ? "#fca5a5" : "#dc2626",
+              cursor: "pointer", padding: 0, position: "relative", 
+              width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center",
+              opacity: 0.85
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" style={{ position: "absolute", top: 0, left: 0, transform: "rotate(-90deg)" }}>
+              <circle cx="12" cy="12" r="10" 
+                fill="none" 
+                stroke={darkMode ? "rgba(252, 165, 165, 0.2)" : "rgba(220, 38, 38, 0.2)"} 
+                strokeWidth="2" 
+              />
+              <circle cx="12" cy="12" r="10" 
+                fill="none" 
+                stroke={darkMode ? "#fca5a5" : "#dc2626"} 
+                strokeWidth="2" 
+                strokeLinecap="round"
+                strokeDasharray="62.83"
+                strokeDashoffset="0"
+                style={{ animation: "toastCountdown 5s linear forwards" }}
+              />
+            </svg>
+            <span style={{ fontSize: "16px", lineHeight: 1, zIndex: 1, transform: "translateY(-1px)" }}>×</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

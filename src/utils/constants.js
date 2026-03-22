@@ -34,6 +34,7 @@ Generate a JSON object with the following structure:
 
 {
   "summary": "string - 1-2 sentence technical summary. Do NOT mention pricing or budgets.",
+  "maxConcurrentUsersPerInstance": "number - (CRITICAL: 1 for local/offline apps, >1 for cloud/SaaS)",
   "estimatedMonthlyCost": "string - ONLY use: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'",
   
   "stack": [
@@ -71,14 +72,14 @@ Generate a JSON object with the following structure:
   ],
 
   "costScaling": [
-    { "users": 100, "costCategory": "string - ONLY use: 'Minimal', 'Moderate', or 'High'", "note": "string - Technical bottleneck (CRITICAL: Do not just write 'scale up'. Identify exact system limit like DB connections, API gateway throttling)" },
-    { "users": 10000, "costCategory": "string", "note": "string - What breaks first? (CRITICAL: Be extremely technical. E.g., exhausted connection pools, memory limits, bandwidth spikes, Redis eviction)" },
-    { "users": 1000000, "costCategory": "string", "note": "string - Extreme scale bottlenecks (e.g. multi-region data sharding constraints, global CDN distribution costs, microservice latency)" }
+    { "users": 100, "costCategory": "string - ONLY: 'Minimal', 'Moderate', 'High'", "note": "string - Technical bottleneck. MUST be consistent with maxConcurrentUsersPerInstance (1=Local/Installs, >1=Cloud/Server load)." },
+    { "users": 10000, "costCategory": "string", "note": "string - Technical bottleneck (e.g. Local: DB indexing; Cloud: connection pools)." },
+    { "users": 1000000, "costCategory": "string", "note": "string - Extreme scale (e.g. Local: distribution/CDN; Cloud: sharding)." }
   ],
 
-  "scalingPath": "string - CRITICAL: Provide actual engineering progression steps (e.g. 'Single node -> Read replicas -> Sharded cluster -> Edge workers'). Do NOT write generic filler like 'scale up as user base grows'.",
+  "scalingPath": "string - CRITICAL: Provide actual engineering progression steps consistent with maxConcurrentUsersPerInstance. If 1, focus on LOCAL growth. If >1, focus on CLOUD.",
 
-  "codingAgentPrompt": "string - A highly detailed, structured, ready-to-use Markdown prompt payload for an AI coding agent (like Cursor or Copilot) to build this entire system. It MUST use clear Markdown headings (e.g., # Project Scope, # Tech Stack, # Architecture, # Core Features, # Agent Instructions). The 'Agent Instructions' section MUST explicitly tell the AI to thoroughly review the architecture, identify and implement any missing components (e.g. error handling, CI/CD, security) for optimal quality, and ensure robust, production-ready code. Do NOT mention pricing, budgets, or specific user count targets/tiers."
+  "codingAgentPrompt": "string - A highly detailed, structured Markdown prompt for an AI coding agent (like Cursor). MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Suggested Folder Structure, # Core Features, # Agent Instructions). 'Agent Instructions' MUST provide site-specific scaffolding advice. CRITICAL: Do NOT add generic 'production-ready', 'cloud scaling', or 'CI/CD' unless the project nature explicitly requires it. Keep advice strictly proportional to the app's scope. DO NOT mention pricing or specific user counts."
 }
 `;
 
@@ -93,6 +94,7 @@ CRITICAL PRICING RULES:
 Return this JSON structure:
 {
   "architecture": {
+    "maxConcurrentUsersPerInstance": 1,
     "overview": "3-5 sentences technical overview. Do NOT mention pricing or budgets.",
     "dataFlow": ["step 1", "step 2", "step 3", "step 4"],
     "keyDecisions": ["decision 1", "decision 2"]
@@ -102,10 +104,10 @@ Return this JSON structure:
     { "item": "service", "costEur": "Free", "notes": "ONLY use categories: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'" }
   ],
   "costScaling": [
-    { "users": 100, "costCategory": "Minimal", "note": "Exact bottleneck (do NOT just write scale up)" },
-    { "users": 10000, "costCategory": "Moderate", "note": "What breaks technically (e.g. caching limits)" }
+    { "users": 100, "costCategory": "Minimal", "note": "Bottleneck (MUST be consistent with maxConcurrentUsersPerInstance)." },
+    { "users": 10000, "costCategory": "Moderate", "note": "Technical limit (Local: indexing speed. Cloud: API throughput)." }
   ],
-  "scalingPath": "Technical roadmap (CRITICAL: write engineering steps like 'Move to Read Replicas', do not write 'Scale infrastructure as needed')",
-  "codingAgentPrompt": "400+ word highly detailed, structured Markdown prompt payload for an AI coding agent. MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Agent Instructions). MUST explicitly instruct the coding agent to review the architecture, fill in any missing bits for optimal project quality (like security/error handling), and ensure production readiness. Do NOT mention pricing, budgets, or tiers."
+  "scalingPath": "Technical roadmap (CRITICAL: Match maxConcurrentUsersPerInstance logic).",
+  "codingAgentPrompt": "Highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings. Provide domain-specific scaffolding advice. CRITICAL: Do NOT add generic 'production-ready' or 'cloud scaling' unless explicitly needed. Keep advice proportional to scope."
 }
 `;
