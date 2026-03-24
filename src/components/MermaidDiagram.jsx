@@ -73,6 +73,20 @@ export function MermaidDiagram({ chart, darkMode }) {
       let l = line.trim();
       if (!l) return null;
 
+      // Part 0: Technical sanitization
+      // Fix accidental quotes inside labels that aren't properly escaped (simplified)
+      if (l.includes('[') && l.includes(']')) {
+         // If we have [ "Something "else" " ], try to normalize to ["Something else"]
+         l = l.replace(/\[\s*"(.*?)"\s*\]/g, (m, p1) => `["${p1.replace(/"/g, '')}"]`);
+      }
+
+      // Fix unclosed brackets within this line (extremely common AI hallucination)
+      const openBrackets = (l.match(/\[/g) || []).length;
+      const closeBrackets = (l.match(/\]/g) || []).length;
+      if (openBrackets > closeBrackets) {
+        l = l + ']'.repeat(openBrackets - closeBrackets);
+      }
+
       // Handle subgraph ID spaces and formatting
       if (l.toLowerCase().startsWith('subgraph ')) {
         const parts = l.split(' ');

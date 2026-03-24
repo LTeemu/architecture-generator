@@ -109,7 +109,7 @@ Generate a JSON object with the following structure:
     "keyDecisions": ["string (MUST explain high-level architectural pattern choices)", "string"]
   },
   
-  "mermaidChart": "string - ONLY output raw mermaid.js syntax. CRITICAL: 1. MUST start exactly with 'graph TD'. 2. DO NOT wrap in markdown backticks. 3. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. 4. Node IDs must be descriptive (e.g., ClientApp, AuthAPI) and have no spaces. 5. Every node must have a descriptive label in [\"brackets\"]. 6. Use subgraphs to group related components into layers (e.g., ClientLayer, APILayer, DataLayer). 7. Create a structured, logical flow between layers.",
+  "mermaidChart": "string - ONLY output raw mermaid.js syntax. CRITICAL: 1. MUST start exactly with 'graph TD'. 2. DO NOT wrap in markdown backticks. 3. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. 4. Node IDs must be alphanumeric (e.g., ClientApp, AuthAPI) and have no spaces. 5. Every node MUST have a descriptive label in [\"brackets\"]. 6. A node ID and its label MUST be on the same line. 7. Do NOT include brackets [ ] or quotes \" inside labels. 8. Use subgraphs to group related components into layers.",
 
   "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
 
@@ -125,7 +125,7 @@ Generate a JSON object with the following structure:
 
   "scalingPath": "string - CRITICAL: Provide actual engineering progression steps consistent with maxConcurrentUsersPerInstance. If 1, focus on LOCAL growth. If >1, focus on CLOUD.",
 
-  "codingAgentPrompt": "string - A highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Suggested Folder Structure, # Core Features, # Agent Instructions). include an # Architectural Patterns section if applicable. CRITICAL: You MUST use ONLY the 'recommended' technologies you selected in the 'stack' section. DO NOT list alternatives or options in this prompt. Keep advice strictly proportional to the app's scope. DO NOT mention pricing."
+  "codingAgentPrompt": "string - A highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings (# Project Scope, # Tech Stack, # Architecture, # Suggested Folder Structure, # Core Features, # Agent Instructions). include an # Architectural Patterns section if applicable. CRITICAL: 1. Use ONLY the 'recommended' technologies you selected in the 'stack' section. 2. DO NOT list alternatives or options. 3. Use DOUBLE NEWLINES between sections for readability. 4. Keep advice strictly proportional to the app's scope. 5. DO NOT mention pricing.",
 }
 `;
 
@@ -146,7 +146,7 @@ Return this JSON structure:
     "keyDecisions": ["Explain high-level architectural pattern choices", "Second technical decision"]
   },
   "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
-  "mermaidChart": "string - ONLY output raw mermaid.js syntax starting with 'graph TD'. DO NOT wrap in markdown backticks. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. Use descriptive IDs and subgraphs for layers. ALL nodes must have text labels in brackets.",
+  "mermaidChart": "string - ONLY output raw mermaid.js syntax starting with 'graph TD'. DO NOT wrap in markdown backticks. Syntax MUST be NodeID[\"Label Text\"] -->|\"Action\"| OtherNode[\"Other Label\"]. Node IDs MUST be alphanumeric. Every node MUST have a label in [\"brackets\"]. ID and label MUST be on the same line. NO brackets or quotes inside labels. Use subgraphs for layers.",
   "costBreakdown": [
     { "item": "service", "costEur": "Free", "notes": "ONLY use categories: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'" }
   ],
@@ -155,6 +155,6 @@ Return this JSON structure:
     { "users": 10000, "costCategory": "Moderate", "note": "Technical limit (Local: indexing speed. Cloud: API throughput)." }
   ],
   "scalingPath": "Technical roadmap (CRITICAL: Match maxConcurrentUsersPerInstance logic).",
-  "codingAgentPrompt": "Highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings. Include an # Architectural Patterns section if applicable. CRITICAL: You MUST use ONLY the specific technologies provided in the User's 'Selected tech stack'. DO NOT offer alternatives or choices in this prompt. Be definitive and provide domain-specific scaffolding advice."
+  "codingAgentPrompt": "Highly detailed, structured Markdown prompt for an AI coding agent. MUST use Markdown headings. Use DOUBLE NEWLINES between sections. Include an # Architectural Patterns section if applicable. CRITICAL: You MUST use ONLY the specific technologies provided in the User's 'Selected tech stack'. DO NOT offer alternatives or choices in this prompt. Be definitive and provide domain-specific scaffolding advice."
 }
 `;
