@@ -2,17 +2,17 @@ import { useState } from "react";
 import { EXAMPLES } from "../utils/constants";
 
 export function InputSection({ description, setDescription, loading, handleGenerate, darkMode }) {
-  const [showExamples, setShowExamples] = useState(true);
+  const [showExamples, setShowExamples] = useState(false);
 
   return (
-    <div style={{ 
-      background: darkMode ? "#0f172a" : "#fff", 
-      border: "1px solid", 
-      borderColor: darkMode ? "#1e293b" : "#e2e8f0", 
-      borderRadius: "14px", 
-      padding: "24px", 
-      marginBottom: "20px", 
-      boxShadow: "0 4px 12px rgba(0,0,0,0.1)" 
+    <div style={{
+      background: darkMode ? "#0f172a" : "#fff",
+      border: "1px solid",
+      borderColor: darkMode ? "#1e293b" : "#e2e8f0",
+      borderRadius: "14px",
+      padding: "24px",
+      marginBottom: "20px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
     }}>
       <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: darkMode ? "#64748b" : "#999", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'JetBrains Mono', monospace" }}>Describe your software</label>
       <textarea
@@ -25,7 +25,7 @@ export function InputSection({ description, setDescription, loading, handleGener
           }
         }}
         placeholder="e.g. A SaaS platform where yoga studios can manage class schedules, accept online bookings, and send automated reminder emails to students..."
-        rows={5}
+        rows={8}
         style={{
           width: "100%",
           background: darkMode ? "#1e293b" : "#f8fafc",

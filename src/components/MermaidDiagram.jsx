@@ -26,7 +26,7 @@ export function MermaidDiagram({ chart, darkMode }) {
     // Step 1: Fix the double-quote label mess (e.g. [""Label""] or ["> "Label""])
     // 1.1: Fix [""Label""] -> ["Label"]
     c = c.replace(/\[\s*"{2,}([^"]+)"{2,}\s*\]/g, '["$1"]');
-    
+
     // 1.2: Fix ["> "Label""] -> ["> Label"]
     c = c.replace(/\[\s*">\s*"([^"]+)"\s*\]/g, '["> $1"]');
 
@@ -49,7 +49,7 @@ export function MermaidDiagram({ chart, darkMode }) {
     // Step 3: Normalize header and force newline
     const headerPattern = /^(graph|flowchart|sequenceDiagram|classDiagram)(\s+)(TD|LR|BT|RL)?/i;
     const match = c.match(headerPattern);
-    
+
     if (match) {
       const fullHeaderMatch = match[0];
       const remainder = c.slice(fullHeaderMatch.length).trim();
@@ -68,16 +68,16 @@ export function MermaidDiagram({ chart, darkMode }) {
       .filter(l => l.length > 0);
 
     const processedLines = lines.map((line, index) => {
-      if (index === 0) return line; 
-      
+      if (index === 0) return line;
+
       let l = line.trim();
       if (!l) return null;
 
       // Part 0: Technical sanitization
       // Fix accidental quotes inside labels that aren't properly escaped (simplified)
       if (l.includes('[') && l.includes(']')) {
-         // If we have [ "Something "else" " ], try to normalize to ["Something else"]
-         l = l.replace(/\[\s*"(.*?)"\s*\]/g, (m, p1) => `["${p1.replace(/"/g, '')}"]`);
+        // If we have [ "Something "else" " ], try to normalize to ["Something else"]
+        l = l.replace(/\[\s*"(.*?)"\s*\]/g, (m, p1) => `["${p1.replace(/"/g, '')}"]`);
       }
 
       // Fix unclosed brackets within this line (extremely common AI hallucination)
@@ -89,11 +89,14 @@ export function MermaidDiagram({ chart, darkMode }) {
 
       // Handle subgraph ID spaces and formatting
       if (l.toLowerCase().startsWith('subgraph ')) {
-        const parts = l.split(' ');
-        if (parts.length > 2) {
-          const content = parts.slice(1).join(' ').replace(/"/g, '').replace(/[\[\]]/g, '');
-          const id = content.replace(/[^a-z0-9]/gi, '_');
-          l = `subgraph ${id} ["${content}"]`;
+        // Only fix if it doesn't already follow the pattern: subgraph ID ["Label"]
+        const alreadyValid = /^subgraph\s+[a-z0-9_]+\s+\[".*"\]/i.test(l);
+        if (!alreadyValid) {
+          const content = l.replace(/^subgraph\s+/i, '').replace(/[\[\]"']/g, '').trim();
+          if (content) {
+            const id = content.replace(/[^a-z0-9]/gi, '_');
+            l = `subgraph ${id} ["${content}"]`;
+          }
         }
       }
 
@@ -104,7 +107,7 @@ export function MermaidDiagram({ chart, darkMode }) {
       const isReserved = /^(subgraph|end|style|class|click|linkStyle|title|accTitle|accDescr|note|participant|actor)/i.test(l);
       const hasBrackets = l.includes('[') || l.includes('(') || l.includes('{');
       const hasConnector = l.includes('-->') || l.includes('--') || l.includes('-.->') || l.includes('==>');
-      
+
       if (!isReserved && !hasBrackets && !hasConnector && l.includes(' ')) {
         const id = l.replace(/[^a-z0-9]/gi, '_');
         l = `${id}["${l}"]`;
@@ -144,7 +147,7 @@ export function MermaidDiagram({ chart, darkMode }) {
       if (ref.current && chart) {
         try {
           setError(null);
-          
+
           // Re-initialize with correct theme right before rendering
           mermaid.initialize({
             startOnLoad: false,
@@ -164,7 +167,7 @@ export function MermaidDiagram({ chart, darkMode }) {
 
           const processedChart = cleanChart(chart);
           const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-          
+
           const { svg } = await mermaid.render(id, processedChart);
           if (ref.current) {
             ref.current.innerHTML = svg;
@@ -183,12 +186,12 @@ export function MermaidDiagram({ chart, darkMode }) {
   return (
     <div style={{ position: 'relative' }}>
       {error && (
-        <div style={{ 
-          fontSize: '12px', 
-          color: '#ef4444', 
-          background: darkMode ? '#450a0a' : '#fef2f2', 
-          padding: '12px', 
-          borderRadius: '8px', 
+        <div style={{
+          fontSize: '12px',
+          color: '#ef4444',
+          background: darkMode ? '#450a0a' : '#fef2f2',
+          padding: '12px',
+          borderRadius: '8px',
           border: '1px solid #fee2e2',
           marginBottom: '10px'
         }}>
@@ -198,13 +201,13 @@ export function MermaidDiagram({ chart, darkMode }) {
           </pre>
         </div>
       )}
-      <div 
-        className="mermaid" 
+      <div
+        className="mermaid"
         ref={ref}
-        style={{ 
-          background: darkMode ? '#0f172a' : '#fff', 
-          padding: '20px', 
-          borderRadius: '8px', 
+        style={{
+          background: darkMode ? '#0f172a' : '#fff',
+          padding: '20px',
+          borderRadius: '8px',
           border: '1px solid',
           borderColor: darkMode ? '#334155' : '#e8e8ee',
           overflowX: 'auto',

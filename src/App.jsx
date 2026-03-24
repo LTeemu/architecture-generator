@@ -274,8 +274,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Inline error replaced by Toast */}
-
         <ResultsSection
           result={result}
           dynData={dynData}
@@ -311,25 +309,25 @@ export default function App() {
           <p style={{ color: darkMode ? "#fca5a5" : "#dc2626", fontSize: "14px", margin: 0, fontWeight: 500 }}>
             ⚠ {error}
           </p>
-          <button 
+          <button
             onClick={() => setError(null)}
             style={{
               background: "transparent", border: "none", color: darkMode ? "#fca5a5" : "#dc2626",
-              cursor: "pointer", padding: 0, position: "relative", 
+              cursor: "pointer", padding: 0, position: "relative",
               width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center",
               opacity: 0.85
             }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" style={{ position: "absolute", top: 0, left: 0, transform: "rotate(-90deg)" }}>
-              <circle cx="12" cy="12" r="10" 
-                fill="none" 
-                stroke={darkMode ? "rgba(252, 165, 165, 0.2)" : "rgba(220, 38, 38, 0.2)"} 
-                strokeWidth="2" 
+              <circle cx="12" cy="12" r="10"
+                fill="none"
+                stroke={darkMode ? "rgba(252, 165, 165, 0.2)" : "rgba(220, 38, 38, 0.2)"}
+                strokeWidth="2"
               />
-              <circle cx="12" cy="12" r="10" 
-                fill="none" 
-                stroke={darkMode ? "#fca5a5" : "#dc2626"} 
-                strokeWidth="2" 
+              <circle cx="12" cy="12" r="10"
+                fill="none"
+                stroke={darkMode ? "#fca5a5" : "#dc2626"}
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeDasharray="62.83"
                 strokeDashoffset="0"
