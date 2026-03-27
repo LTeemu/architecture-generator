@@ -1,7 +1,6 @@
 import { CopyButton } from "./Common/CopyButton";
 import { Section, SectionSkeleton } from "./Common/Section";
 import { StackCategoryRow } from "./StackPicker";
-import { CostScalingTable } from "./CostSection";
 import { MermaidDiagram } from "./MermaidDiagram";
 
 export function ResultsSection({
@@ -19,9 +18,7 @@ export function ResultsSection({
   if (!result) return null;
 
   const arch = dynData?.architecture;
-  const costBreakdown = dynData?.costBreakdown;
-  const costScaling = dynData?.costScaling;
-  const scalingPath = dynData?.scalingPath;
+  const scalingGuide = dynData?.scalingGuide;
   const codingPrompt = dynData?.codingAgentPrompt || "";
   const mermaidChart = dynData?.mermaidChart;
 
@@ -38,11 +35,8 @@ ${result.stack.map((cat, i) => {
       return `- **${cat.category}**: ${item.name}`;
     }).join('\n')}
 
-## Cost Breakdown
-${costBreakdown?.map(row => `- ${row.item}: ${row.costEur} (${row.notes})`).join('\n')}
-
-## Scaling Roadmap
-${scalingPath}
+## Scaling Guide
+${scalingGuide || ''}
 
 ${dynData?.architecturalPatterns ? `## Advanced Patterns\n${dynData.architecturalPatterns}\n\n` : ""}## Mermaid Diagram
 \`\`\`mermaid
@@ -183,17 +177,11 @@ ${codingPrompt}
       </Section>
 
       {/* Cost */}
-      <Section title="Cost Breakdown" badge="Cost" accentColor="#16a34a" updating={updating} darkMode={darkMode}>
-        {updating ? <SectionSkeleton color="#16a34a" /> : (
-          <CostScalingTable costScaling={costScaling} costBreakdown={costBreakdown} darkMode={darkMode} />
-        )}
-      </Section>
-
       {/* Scaling */}
-      <Section title="Scaling Roadmap" badge="Scale" accentColor="#ea580c" updating={updating} darkMode={darkMode}>
-        {updating ? <SectionSkeleton color="#ea580c" /> : (
-          <div style={{ marginTop: "14px", padding: "13px 15px", background: darkMode ? "#431407" : "#fff7f0", border: "1px solid", borderColor: darkMode ? "#7c2d12" : "#fed7aa", borderRadius: "8px" }}>
-            <p style={{ color: darkMode ? "#fdba74" : "#7c2d12", fontSize: "14px", lineHeight: "1.7", margin: 0 }}>{scalingPath}</p>
+      <Section title="Scaling Guide" badge="Scale" accentColor="#ea580c" updating={updating} darkMode={darkMode}>
+        {updating ? <SectionSkeleton color="#ea580c" /> : scalingGuide && (
+          <div style={{ marginTop: "14px", padding: "16px", background: darkMode ? "#1e293b" : "#f9fafb", border: "1px solid", borderColor: darkMode ? "#334155" : "#e8e8ee", borderRadius: "10px" }}>
+            <p style={{ color: darkMode ? "#e2e8f0" : "#333", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{scalingGuide}</p>
           </div>
         )}
       </Section>

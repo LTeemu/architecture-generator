@@ -38,7 +38,10 @@ export function InputSection({ description, setDescription, loading, handleGener
           lineHeight: "1.65",
           fontFamily: "'Sora', sans-serif",
           marginBottom: "14px",
-          outline: "none"
+          outline: "none",
+          resize: "vertical",
+          minHeight: "120px",
+          maxHeight: "600px"
         }}
         className="form-textarea"
       />

@@ -58,7 +58,8 @@ export default function App() {
     return res.stack.map((cat, i) => {
       const idx = sels[i] ?? -1;
       const item = idx === -1 ? cat.recommended : cat.alternatives?.[idx];
-      return item ? `${cat.category}: ${item.name}` : null;
+      if (!item) return null;
+      return `${cat.category}: ${item.name}`;
     }).filter(Boolean).join("\n");
   };
 
@@ -80,11 +81,16 @@ export default function App() {
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           response_format: { type: "json_object" },
-          max_tokens: 4096,
+          max_tokens: 5000,
           temperature: 0.1,
           messages: [
             { role: "system", content: SYSTEM_PROMPT_REGEN },
-            { role: "user", content: `App: ${submittedDescription || description}\n\nSelected tech stack:\n${stackSummary}\n\nGenerate architecture, mermaid chart, costs, scaling path and coding prompt for this exact stack.` }
+            { role: "user", content: `App: ${submittedDescription || description}
+
+Selected tech stack (use ONLY these):
+${stackSummary}
+
+Generate architecture, scaling guide, and coding prompt for this stack. Do NOT add technologies or features not listed above. Mermaid node labels MUST show technology names: 'Database (PostgreSQL)', 'Client (React)'.` }
           ]
         })
       });
@@ -156,7 +162,7 @@ export default function App() {
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           response_format: { type: "json_object" },
-          max_tokens: 4096,
+          max_tokens: 5000,
           temperature: 0.1,
           messages: [
             { role: "system", content: SYSTEM_PROMPT_INITIAL },
