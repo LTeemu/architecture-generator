@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { MoonIcon, SunIcon, HistoryIcon } from "./Common/Icons";
 
 export function Header({ apiKey, setApiKey, width, history, onHistorySelect, clearHistory, darkMode, setDarkMode }) {
   const [showHistory, setShowHistory] = useState(false);
@@ -32,13 +33,6 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
     }}>
       <div style={{ maxWidth: "100%", margin: "0 auto", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-          <div style={{ position: "relative", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="8" fill={darkMode ? "#2563eb" : "#1e40af"} />
-              <path d="M17 7L10 18H16L15 25L22 14H16L17 7Z" fill="white" stroke="white" strokeWidth="1.2" strokeLinejoin="round" />
-              <path opacity="0.3" d="M12 21L19 10H14L15 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </div>
           <span style={{ 
             fontWeight: 900, 
             fontSize: "18px", 
@@ -55,9 +49,9 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
               padding: "0 10px", 
               fontSize: "14px", 
               border: "1px solid", 
-              borderColor: darkMode ? "#0f172a" : "#e2e8f0", 
+              borderColor: darkMode ? "#334155" : "#e8e8ee", 
               borderRadius: "6px", 
-              background: darkMode ? "#1e293b" : "#f1f5f9", 
+              background: darkMode ? "#1e293b" : "#f5f5f7", 
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
@@ -65,7 +59,7 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
               color: darkMode ? "#f8fafc" : "#1e293b"
             }}
           >
-            {darkMode ? "🌙" : "☀️"}
+            {darkMode ? <MoonIcon /> : <SunIcon />}
           </button>
 
           <div ref={historyRef} style={{ position: "relative", display: "flex" }}>
@@ -76,17 +70,19 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 padding: "0 12px", 
                 fontSize: "12px", 
                 border: "1px solid", 
-                borderColor: darkMode ? "#0f172a" : "#e2e8f0", 
+                borderColor: darkMode ? "#334155" : "#e8e8ee", 
                 borderRadius: "6px", 
-                background: darkMode ? "#1e293b" : "#f1f5f9", 
+                background: darkMode ? "#1e293b" : "#f5f5f7", 
                 color: darkMode ? "#f8fafc" : "#1e293b",
                 cursor: "pointer", 
-                fontFamily: "'Sora', sans-serif",
+                 fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
                 display: "flex",
                 fontWeight: 600,
-                alignItems: "center"
+                alignItems: "center",
+                gap: "6px"
               }}
             >
+              <HistoryIcon />
               History ({history.length})
             </button>
             
@@ -106,7 +102,7 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 padding: "16px" 
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                  <h3 style={{ fontSize: "10px", fontWeight: 700, margin: 0, color: darkMode ? "#64748b" : "#999", textTransform: "uppercase", letterSpacing: "0.1em" }}>Recent Generations</h3>
+                  <h3 style={{ fontSize: "10px", fontWeight: 700, margin: 0, color: darkMode ? "#94a3b8" : "#777", textTransform: "uppercase", letterSpacing: "0.1em" }}>Recent Generations</h3>
                   {history.length > 0 && (
                     <button 
                       onClick={() => { if(confirm("Clear all history?")) clearHistory(); }}
@@ -156,12 +152,12 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
               padding: "0 12px", 
               fontSize: "12px", 
               border: "1px solid", 
-              borderColor: darkMode ? "#0f172a" : "#e2e8f0", 
+              borderColor: darkMode ? "#334155" : "#e8e8ee", 
               borderRadius: "6px", 
-              background: darkMode ? "#1e293b" : "#f1f5f9",
+              background: darkMode ? "#1e293b" : "#f5f5f7",
               color: darkMode ? "#f8fafc" : "#1e293b",
               width: width > 500 ? "200px" : "120px", 
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
               outline: "none",
               display: "flex",
               alignItems: "center"

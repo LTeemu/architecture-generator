@@ -14,7 +14,7 @@ export function InputSection({ description, setDescription, loading, handleGener
       marginBottom: "20px",
       boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
     }}>
-      <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: darkMode ? "#64748b" : "#999", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'JetBrains Mono', monospace" }}>Describe your software</label>
+       <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: darkMode ? "#94a3b8" : "#666", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif" }}>Describe your software</label>
       <textarea
         value={description}
         onChange={e => setDescription(e.target.value)}
@@ -26,23 +26,23 @@ export function InputSection({ description, setDescription, loading, handleGener
         }}
         placeholder="e.g. A SaaS platform where yoga studios can manage class schedules, accept online bookings, and send automated reminder emails to students..."
         rows={8}
-        style={{
-          width: "100%",
-          background: darkMode ? "#1e293b" : "#f8fafc",
-          border: "1px solid",
-          borderColor: darkMode ? "#334155" : "#e2e8f0",
-          borderRadius: "10px",
-          padding: "16px",
-          color: darkMode ? "#f8fafc" : "#0f172a",
-          fontSize: "14px",
-          lineHeight: "1.65",
-          fontFamily: "'Sora', sans-serif",
-          marginBottom: "14px",
-          outline: "none",
-          resize: "vertical",
-          minHeight: "120px",
-          maxHeight: "600px"
-        }}
+         style={{
+           width: "100%",
+           background: darkMode ? "#1e293b" : "#f8fafc",
+           border: "1px solid",
+           borderColor: darkMode ? "#334155" : "#e2e8f0",
+           borderRadius: "10px",
+           padding: "16px",
+           color: darkMode ? "#f8fafc" : "#0f172a",
+           fontSize: "14px",
+           lineHeight: "1.65",
+           fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
+           marginBottom: "14px",
+           outline: "none",
+           resize: "vertical",
+           minHeight: "120px",
+           maxHeight: "600px"
+         }}
         className="form-textarea"
       />
 
@@ -69,7 +69,7 @@ export function InputSection({ description, setDescription, loading, handleGener
         }}>
           {showExamples ? "▼" : "▶"}
         </span>
-        <span style={{ fontSize: "11px", fontWeight: 700, color: darkMode ? "#64748b" : "#999", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.06em" }}>
+        <span style={{ fontSize: "11px", fontWeight: 700, color: darkMode ? "#94a3b8" : "#666", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", letterSpacing: "0.06em" }}>
           TRY AN EXAMPLE
         </span>
       </div>
@@ -81,9 +81,9 @@ export function InputSection({ description, setDescription, loading, handleGener
               <div style={{
                 fontSize: "11px",
                 fontWeight: 800,
-                color: darkMode ? "#475569" : "#aaa",
+                color: darkMode ? "#94a3b8" : "#777",
                 marginBottom: "8px",
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",
                 display: "flex",
@@ -103,9 +103,9 @@ export function InputSection({ description, setDescription, loading, handleGener
                       borderRadius: "4px",
                       padding: "6px 14px",
                       fontSize: "12px",
-                      color: darkMode ? "#f1f5f9" : "#666",
+                      color: darkMode ? "#f1f5f9" : "#444",
                       cursor: "pointer",
-                      fontFamily: "'Sora', sans-serif",
+                      fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
                       maxWidth: "100%",
                       textAlign: "start"
                     }}>
@@ -119,7 +119,7 @@ export function InputSection({ description, setDescription, loading, handleGener
       )}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
         <button className="gen-btn" onClick={() => { setShowExamples(false); handleGenerate(); }} disabled={!description.trim() || loading}
-          style={{ background: !description.trim() || loading ? (darkMode ? "#334155" : "#e8e8ee") : "#2563eb", border: "none", borderRadius: "8px", padding: "11px 24px", cursor: !description.trim() || loading ? "not-allowed" : "pointer", color: !description.trim() || loading ? "#999" : "#fff", fontWeight: 700, fontSize: "14px", fontFamily: "'Sora', sans-serif", letterSpacing: "-0.01em", marginLeft: "auto" }}>
+          style={{ background: !description.trim() || loading ? (darkMode ? "#334155" : "#e8e8ee") : "#2563eb", border: "none", borderRadius: "8px", padding: "11px 24px", cursor: !description.trim() || loading ? "not-allowed" : "pointer", color: !description.trim() || loading ? "#999" : "#fff", fontWeight: 700, fontSize: "14px", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", letterSpacing: "-0.01em", marginLeft: "auto" }}>
           {loading ? "Generating…" : "Generate Architecture →"}
         </button>
       </div>

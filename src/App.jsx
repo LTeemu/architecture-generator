@@ -214,35 +214,34 @@ Generate architecture, scaling guide, and coding prompt for this stack. Do NOT a
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
   };
 
-  return (
-    <div style={{
-      minHeight: "100vh",
-      background: darkMode ? "#020617" : "#f1f5f9",
-      fontFamily: "'Sora', sans-serif",
-      color: darkMode ? "#f8fafc" : "#1e293b"
-    }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300..800&family=JetBrains+Mono:wght@400..700&display=swap');
-        * { box-sizing: border-box; }
-        .gen-btn { }
-        .gen-btn:hover:not(:disabled) { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 16px #2563eb33 !important; }
-        .pill:hover { background: ${darkMode ? "#334155" : "#e2e8f0"} !important; color: ${darkMode ? "#60a5fa" : "#1d4ed8"} !important; border-color: ${darkMode ? "#475569" : "#cbd5e1"} !important; cursor: pointer; }
-        .fade-in { animation: fadeUp 0.4s ease forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes shimmer { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
-        .dot-pulse span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2563eb; margin: 0 3px; animation: dotPulse 1.4s ease-in-out infinite; }
-        .dot-pulse span:nth-child(2) { animation-delay: 0.2s; } .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes dotPulse { 0%,80%,100% { transform: scale(0.55); opacity: 0.35; } 40% { transform: scale(1); opacity: 1; } }
-        @keyframes toastCountdown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 62.83; } }
-        
-        /* Dark mode overrides */
-        ${darkMode ? `
-          input, textarea { color: #f8fafc !important; border-color: #1e293b !important; }
-          .text-muted { color: #94a3b8 !important; }
-          .bg-muted { background: #0f172a !important; }
-        ` : ""}
-      `}</style>
+return (
+  <div style={{
+    minHeight: "100vh",
+    background: darkMode ? "#020617" : "#f1f5f9",
+    fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
+    color: darkMode ? "#f8fafc" : "#1e293b"
+  }}>
+<style>{`
+  * { box-sizing: border-box; }
+  .gen-btn { }
+  .gen-btn:hover:not(:disabled) { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 16px #2563eb33 !important; }
+  .pill:hover { background: ${darkMode ? "#334155" : "#e2e8f0"} !important; color: ${darkMode ? "#60a5fa" : "#1d4ed8"} !important; border-color: ${darkMode ? "#475569" : "#cbd5e1"} !important; cursor: pointer; }
+  .fade-in { animation: fadeUp 0.4s ease forwards; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shimmer { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  .dot-pulse span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2563eb; margin: 0 3px; animation: dotPulse 1.4s ease-in-out infinite; }
+  .dot-pulse span:nth-child(2) { animation-delay: 0.2s; } .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotPulse { 0%,80%,100% { transform: scale(0.55); opacity: 0.35; } 40% { transform: scale(1); opacity: 1; } }
+  @keyframes toastCountdown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 62.83; } }
+  
+  /* Dark mode overrides */
+  ${darkMode ? `
+    input, textarea { color: #f8fafc !important; border-color: #1e293b !important; }
+    .text-muted { color: #94a3b8 !important; }
+    .bg-muted { background: #0f172a !important; }
+  ` : ""}
+`}</style>
 
       <Header
         apiKey={apiKey}
@@ -276,7 +275,7 @@ Generate architecture, scaling guide, and coding prompt for this stack. Do NOT a
             marginBottom: "16px"
           }}>
             <div className="dot-pulse" style={{ marginBottom: "16px" }}><span /><span /><span /></div>
-            <p style={{ color: darkMode ? "#94a3b8" : "#999", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", margin: 0 }}>{STEPS[loadingStep]}</p>
+             <p style={{ color: darkMode ? "#94a3b8" : "#999", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", fontSize: "13px", margin: 0 }}>{STEPS[loadingStep]}</p>
           </div>
         )}
 

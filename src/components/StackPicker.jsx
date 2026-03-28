@@ -14,11 +14,11 @@ export function OptionCard({ name, cost, reason, isSelected, isRecommended, onSe
         <span style={{ 
           position: "absolute", top: "0px", right: "0px",
           fontSize: "9px", 
-          fontFamily: "'JetBrains Mono', monospace", 
+          fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", 
           color: darkMode ? "#4ade80" : "#16a34a", 
           background: darkMode ? "#1e293b" : "#fff", 
-          border: `1px solid ${darkMode ? "#334155" : "#e8e8ee"}`,
-          borderTop: "none", borderRight: "none",
+          borderBottom: `1px solid ${darkMode ? "#334155" : "#e8e8ee"}`,
+          borderLeft: `1px solid ${darkMode ? "#334155" : "#e8e8ee"}`,
           padding: "2px 7px", 
           borderRadius: "0 10px 0 4px",
           fontWeight: 700, 
@@ -31,7 +31,7 @@ export function OptionCard({ name, cost, reason, isSelected, isRecommended, onSe
       <div style={{ fontWeight: 700, fontSize: "12.5px", color: darkMode ? "#fff" : "#111", lineHeight: "1.3", wordBreak: "break-word" }}>{name}</div>
 
       {/* Reason */}
-      {reason && <p style={{ fontSize: "11.5px", color: darkMode ? "#94a3b8" : "#666", margin: 0, lineHeight: "1.5" }}>{reason}</p>}
+      {reason && <p style={{ fontSize: "11.5px", color: darkMode ? "#94a3b8" : "#555", margin: 0, lineHeight: "1.5" }}>{reason}</p>}
     </div>
   );
 }
@@ -40,7 +40,7 @@ export function StackCategoryRow({ category, recommended, alternatives, selected
   const alts = alternatives || [];
   return (
     <div style={{ background: darkMode ? "#0f172a" : "#fafafa", border: "1px solid", borderColor: darkMode ? "#1e293b" : "#e8e8ee", borderRadius: "12px", padding: "14px", marginBottom: "12px", overflow: "hidden" }}>
-      <div style={{ fontSize: "10px", fontWeight: 700, color: darkMode ? "#64748b" : "#aaa", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>
+      <div style={{ fontSize: "10px", fontWeight: 700, color: darkMode ? "#94a3b8" : "#777", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "10px" }}>
         <span style={{ marginRight: "6px" }}>{recommended.icon || "🔧"}</span>
         {category}
       </div>

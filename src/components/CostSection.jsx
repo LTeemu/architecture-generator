@@ -9,7 +9,7 @@ export function CostScalingTable({ costScaling, darkMode }) {
               <span style={{ fontSize: "13px", fontWeight: 700, color: darkMode ? "#f8fafc" : "#111" }}>
                 {tier.users >= 1000000 ? `${tier.users / 1000000}M` : tier.users >= 1000 ? `${(tier.users / 1000).toFixed(tier.users % 1000 === 0 ? 0 : 1)}k` : tier.users} users
               </span>
-              {tier.phase && <span style={{ fontSize: "10px", color: darkMode ? "#94a3b8" : "#888", fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase" }}>{tier.phase}</span>}
+              {tier.phase && <span style={{ fontSize: "10px", color: darkMode ? "#94a3b8" : "#888", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", textTransform: "uppercase" }}>{tier.phase}</span>}
             </div>
             {(tier.services || []).map((svc, j) => (
               <div key={j} style={{ marginBottom: j < tier.services.length - 1 ? "10px" : 0, paddingBottom: j < tier.services.length - 1 ? "10px" : 0, borderBottom: j < tier.services.length - 1 ? `1px solid ${darkMode ? "#334155" : "#eee"}` : "none" }}>

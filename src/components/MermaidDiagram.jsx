@@ -5,7 +5,7 @@ mermaid.initialize({
   startOnLoad: true,
   theme: 'default',
   securityLevel: 'loose',
-  fontFamily: 'Sora, sans-serif',
+  fontFamily: "'Space Grotesk', system-ui, sans-serif",
 });
 
 export function MermaidDiagram({ chart, darkMode }) {
@@ -153,7 +153,7 @@ export function MermaidDiagram({ chart, darkMode }) {
             startOnLoad: false,
             theme: darkMode ? 'dark' : 'default',
             securityLevel: 'loose',
-            fontFamily: 'Sora, sans-serif',
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
             suppressErrorIndicators: true,
             themeVariables: darkMode ? {
               primaryColor: '#3b82f6',

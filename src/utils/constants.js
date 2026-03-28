@@ -9,12 +9,30 @@ export const EXAMPLES = [
     ]
   },
   {
+    category: "Games & Interactive",
+    icon: "🎮",
+    items: [
+      "A mobile game like Pokémon where each monster is randomly generated based on monster-specific base guideline values, offline only.",
+      "A multiplayer online battle arena game with matchmaking, real-time combat, and ranked leaderboards.",
+      "A 2D platformer with procedurally generated levels, character progression, and local high score storage."
+    ]
+  },
+  {
     category: "Real-Time & Social",
     icon: "⚡",
     items: [
       "A Discord-like team chat platform with channels, threads, voice rooms, file sharing, and presence indicators, supporting thousands of concurrent users per server.",
       "A live collaborative whiteboard app where multiple users draw simultaneously with low-latency sync, undo history, and persistent board storage.",
       "A real-time sports betting platform that streams live odds, processes bets with strict consistency guarantees, and settles payouts automatically when events end."
+    ]
+  },
+  {
+    category: "Desktop & Native Apps",
+    icon: "💻",
+    items: [
+      "A desktop code editor with syntax highlighting, extensions marketplace, integrated terminal, and Git version control built in.",
+      "A desktop video editing application with timeline editing, effects rendering, and export to multiple formats.",
+      "A native file manager with cloud sync, search indexing, preview thumbnails, and plugin support for custom integrations."
     ]
   },
   {
@@ -27,12 +45,30 @@ export const EXAMPLES = [
     ]
   },
   {
-    category: "Developer Tools & APIs",
+    category: "CLI & Developer Tools",
     icon: "🛠️",
     items: [
-      "An API gateway service that handles authentication, rate limiting, request transformation, and usage analytics for third-party developers, with a self-serve dashboard.",
-      "A CI/CD platform that runs containerized build pipelines, caches dependencies between runs, streams live build logs, and deploys to preview environments per pull request.",
-      "An open-source feature flag service with percentage rollouts, user targeting rules, A/B test metrics, and a lightweight SDK for React and Node.js."
+      "A command-line tool that scaffolds new projects with templates, manages dependencies, runs tests, and deploys to multiple cloud providers.",
+      "A static site generator that processes Markdown files, applies themes, builds optimized HTML, and generates a sitemap with RSS feed.",
+      "A database migration tool that tracks schema versions, generates migration scripts, handles rollbacks, and validates data integrity."
+    ]
+  },
+  {
+    category: "IoT & Embedded",
+    icon: "📡",
+    items: [
+      "A smart home hub that connects to various sensors and devices, automates routines based on time and conditions, and provides a mobile dashboard.",
+      "An industrial monitoring system that collects telemetry from factory equipment, detects anomalies, triggers alerts, and stores historical data for analysis.",
+      "A wearable fitness tracker firmware that monitors heart rate and steps, syncs data to a companion app, and runs for days on a single charge."
+    ]
+  },
+  {
+    category: "Data & ML Pipelines",
+    icon: "📊",
+    items: [
+      "A real-time clickstream analytics platform that ingests millions of events per second, runs windowed aggregations, detects anomalies with ML, and serves dashboards with sub-second queries.",
+      "An automated document processing pipeline that extracts data from PDFs and images using OCR, classifies document types, validates fields against business rules, and routes exceptions to human reviewers.",
+      "A recommendation engine that processes user interaction streams, builds real-time preference embeddings, serves personalized suggestions under 50ms, and A/B tests different ranking models."
     ]
   },
   {
@@ -45,12 +81,12 @@ export const EXAMPLES = [
     ]
   },
   {
-    category: "Data & ML Pipelines",
-    icon: "📊",
+    category: "APIs & Microservices",
+    icon: "🔌",
     items: [
-      "A real-time clickstream analytics platform that ingests millions of events per second, runs windowed aggregations, detects anomalies with ML, and serves dashboards with sub-second queries.",
-      "An automated document processing pipeline that extracts data from PDFs and images using OCR, classifies document types, validates fields against business rules, and routes exceptions to human reviewers.",
-      "A recommendation engine that processes user interaction streams, builds real-time preference embeddings, serves personalized suggestions under 50ms, and A/B tests different ranking models."
+      "An API gateway that handles authentication, rate limiting, request routing, and usage analytics for hundreds of internal microservices.",
+      "A payment processing API that supports multiple providers, handles webhooks, implements retry logic, and provides idempotent transaction guarantees.",
+      "A GraphQL federation layer that aggregates data from multiple backend services into a unified schema with caching and query complexity limits."
     ]
   }
 ];
@@ -67,28 +103,49 @@ export const STEPS = [
 // ========== SHARED CONSTANTS ==========
 
 const ARCHITECT_ROLE = `
-You are an expert software architect specialising in lean, production-ready systems.
-Your primary goal is to design architectures that utilize modern cloud capabilities when appropriate, while remaining professional and technical.
-Prioritize technical accuracy and follow the latest architectural patterns.
+You are an expert software architect specializing in lean, production-ready systems across ALL software domains.
+Your primary goal is to analyze what KIND of software is being described and choose technologies that are native to that domain.
+
+CRITICAL: Before suggesting any technology, determine the software type from the description. The type of software determines the appropriate technology choices — do NOT default to web/mobile frameworks when the description is clearly something else.
 
 RULES:
-1. ONLY use technologies from the selected stack. Do NOT add any tool not in the stack.
-2. ONLY describe features the user mentioned. Do NOT add features or technologies not in the description, except for foundational components (client, server, database) which are implicit requirements for web/cloud apps.
-3. Do NOT invent technology names or version numbers. Use real, publicly available tools.
-4. Every sentence in architecture.overview and dataFlow must reference a SPECIFIC stack component by name.
-5. Key decisions must be tradeoffs ("X over Y because Z"), not requirements.
-6. scalingGuide must reference SPECIFIC selected tools and describe concrete bottlenecks.
-7. The mermaidChart must have NO disconnected nodes — every node must have at least one edge. Verify this before outputting. Every node label MUST include the technology name in parentheses, e.g., 'Database (PostgreSQL)', 'Storage (Amazon S3)', 'Client (React)'.
-8. Each distinct feature described by the user MUST have its own stack category. Do NOT merge or drop features. If the user describes channels, threads, voice rooms, file sharing, and presence — all five must appear as categories.
+
+TECHNOLOGY SELECTION (most critical):
+1. Analyze implicit requirements. If the software has users interacting through a graphical interface, a Client/UI category is required. If it stores or retrieves data, a Database category is required. If it runs server-side logic, a Server/Backend category is required. Do not omit core categories just because the user description focuses on features rather than infrastructure.
+2. Suggest technologies that are NATIVE to the described domain — the most appropriate tools for the job, not the most common web stack.
+3. The stack categories must reflect the ACTUAL software type being described, not a generic web app template.
+4. Include core foundational categories appropriate to the type of software. Do not force categories that are irrelevant (e.g. a CLI tool does not need a UI category; an offline game does not need a Server; a static site does not need a Database). The core categories must have alternatives so the user can switch primary technologies.
+5. All suggested technologies must be compatible with each other — libraries, tools, and dependencies in each category must work with the core technology chosen for the primary category. Do not suggest tools that require a different runtime, language, or platform than what the main technology supports.
+6. Each distinct feature described by the user MUST have its own stack category. Do NOT merge or drop features. Every feature the user mentions must be represented.
+7. NEVER silently assume a technology. If you mention ANY technology anywhere in the output (architecture, coding prompt, mermaid, etc.), it MUST appear as a stack category with alternatives. There should be no hidden or assumed technologies.
+
+CONSISTENCY:
+8. ONLY use technologies from the selected stack. Do NOT add any tool not in the stack.
+9. ONLY describe features the user mentioned. Do NOT add features or technologies not in the description, except for foundational components that are clearly implied by the domain.
+10. Do NOT invent technology names or version numbers. Use real, publicly available tools.
+
+OUTPUT QUALITY:
+11. Every sentence in architecture.overview and dataFlow must reference a SPECIFIC stack component by name.
+12. Key decisions must be tradeoffs ("X over Y because Z"), not requirements.
+13. scalingGuide must reference SPECIFIC selected tools and describe concrete bottlenecks.
+14. The mermaidChart must have NO disconnected nodes — every node must have at least one edge. Verify this before outputting. Every node label MUST include the technology name in parentheses.
 `;
 
 const MERMAID_RULES = `
 MERMAID SYNTAX RULES:
 
-⚠️ FIRST: Every node label MUST include the technology name in parentheses. Format: Role (Technology). Examples: 'Message Service (Pusher)', 'Database (PostgreSQL)', 'File Storage (Amazon S3)', 'Client App (React)'.
+CRITICAL LABELING RULES (HIGHEST PRIORITY):
+- Node labels MUST represent specific components (e.g., 'API Gateway', 'Device Registry', 'Worker Service').
+  Do NOT use layer names as node labels (e.g., avoid 'Client Layer', 'Cloud Orchestration Layer' as node labels).
+- Edge labels MUST describe the specific data or control flow (e.g., 'sends telemetry', 'updates configuration').
+  Do NOT use generic terms like 'events', 'data', 'actions', or 'requests' without further context.
+
+TECHNOLOGY NAMING REQUIREMENT:
+⚠️ Every node label MUST include the technology name in parentheses. Format: Role (Technology). Examples: 'Message Service (Pusher)', 'Database (PostgreSQL)', 'File Storage (Amazon S3)', 'Client App (React)'.
 
 FORBIDDEN labels (these are INVALID): 'Client', 'Server', 'Database', 'Storage', 'API', 'Client App', 'Server App'. You MUST add the technology: 'Client App (React)', 'Server (Node.js)', 'Database (PostgreSQL)', 'File Storage (Amazon S3)', 'API Gateway (Express)'.
 
+SYNTAX RULES:
 - Start with 'graph TD' or 'graph LR' – no backticks.
 - Node: NodeID["Label (Technology)"] (NodeID alphanumeric, no spaces; label descriptive with technology in parentheses).
 - Edge: NodeA -->|"Action"| NodeB (use descriptive action labels).
@@ -98,33 +155,19 @@ FORBIDDEN labels (these are INVALID): 'Client', 'Server', 'Database', 'Storage',
 - Every node must have ≥1 edge, and edges must cover all dataFlow steps.
 - Subgraph IDs and node IDs MUST be globally unique. Do NOT use the same ID for a subgraph and a node.
 
-CRITICAL LABELING RULES:
-- Node labels MUST represent specific components (e.g., 'API Gateway', 'Device Registry', 'Worker Service').
-  Do NOT use layer names as node labels (e.g., avoid 'Client Layer', 'Cloud Orchestration Layer' as node labels).
-- Edge labels MUST describe the specific data or control flow (e.g., 'sends telemetry', 'updates configuration').
-  Do NOT use generic terms like 'events', 'data', 'actions', or 'requests' without further context.
-
 Example (do not copy, but follow the structure):
 graph TD
   subgraph ClientLayer ["Client Layer"]
     UserApp["User Application (React)"]
-    Dashboard["Dashboard (React)"]
   end
   subgraph APILayer ["API Layer"]
     Gateway["API Gateway (Express)"]
   end
-  subgraph RuntimeLayer ["Runtime Layer"]
-    Worker["Worker Service (BullMQ)"]
-  end
   subgraph DataLayer ["Data Layer"]
     Storage["Data Storage (PostgreSQL)"]
-    Cache["Cache (Redis)"]
   end
-  UserApp -->|"submits task"| Gateway
-  Gateway -->|"routes request"| Worker
-  Worker -->|"persists state"| Storage
-  Worker <-->|"caches results"| Cache
-  Dashboard -->|"queries metrics"| Worker
+  UserApp -->|"submits request"| Gateway
+  Gateway -->|"queries data"| Storage
 `;
 
 const OUTPUT_INSTRUCTION = `
@@ -150,7 +193,7 @@ const PRE_STACK_FIELDS = `
 const STACK_STRUCTURE = `
   "stack": [
     {
-      "// note": "CRITICAL: 4 to 8 specialized categories. Each distinct FEATURE the user described MUST be its own category (e.g., voice rooms, text messaging, file sharing, presence — all separate). Do NOT drop any described feature. Also include foundational categories (client, server, database) for web/cloud apps.",
+      "// note": "CRITICAL: 4 to 8 specialized categories. Each distinct FEATURE the user described MUST be its own category. Do NOT drop any described feature. Also analyze implicit requirements: if users interact through a UI, include a Client/UI category; if data is stored, include a Database category; if server logic runs, include a Server/Backend category. Do NOT omit core categories just because the description focuses on features.",
       "// tools": "Only suggest technologies you are CERTAIN exist with real version numbers. Do NOT invent names or suggest discontinued products. Prefer well-known, widely-adopted technologies.",
       "category": "string - REQUIRED: Create a highly specific, context-aware category name tailored to this app's exact needs. Do NOT just use generic tiers.",
       "recommended": {
@@ -162,7 +205,7 @@ const STACK_STRUCTURE = `
       "alternatives": [
         {
           "icon": "string",
-          "name": "string - CRITICAL: Provide between 1 and 4 of these alternative objects in this array. DO NOT JUST OUTPUT 1 OR 2 EVERY TIME. If there are 4 great distinct alternatives (e.g. AWS vs Google vs Azure vs Open-Source), output 4 objects! Vary the count!",
+          "name": "string - CRITICAL: Provide between 1 and 4 of these alternative objects in this array. DO NOT JUST OUTPUT 1 OR 2 EVERY TIME. If there are 4 great distinct alternatives, output 4 objects! Vary the count!",
           "reason": "string - ONE specific sentence. MUST be different from the recommended reason AND from other alternatives. Mention what makes THIS tool a different choice (open-source vs managed, different ecosystem, different tradeoff). BAD: 'Highly scalable'. GOOD: 'Open-source and self-hosted — full control over data but requires managing your own WebSocket infrastructure.'",
           "cost": "string - ONLY use: 'Free', 'Freemium', 'Paid', 'Royalty', or 'Usage-Based'"
         }
@@ -180,7 +223,7 @@ const POST_STACK_FIELDS = `
   "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
   "mermaidChart": "string - ONLY output raw mermaid.js syntax. ${MERMAID_RULES} REMINDER: Every node MUST have a technology name. BAD: 'Database', 'Server', 'ClientApp'. GOOD: 'Database (PostgreSQL)', 'Server (Node.js)', 'Client (React)'.",
   "scalingGuide": "string - Provide a concise scaling guide. Reference the selected technologies by name. Describe what breaks first for THIS architecture and how to fix it. Include what to monitor.",
-  "codingAgentPrompt": "string - Highly detailed Markdown prompt for an AI coding agent. Must include headings: # Project Scope, # Tech Stack, # Architecture, # Suggested Folder Structure (3+ levels), # Core Features, # API Endpoints (with method, path, and request/response details), # Event Topics (with example event schemas), # Data Models (with fields and relationships), # Agent Instructions (step-by-step), and # Architectural Patterns. Use only the recommended technologies from the stack (no alternatives). Provide concrete, app-specific details. For local/hybrid apps, also include # Local Storage Schema and # Sync Protocol. Do not mention pricing."
+  "codingAgentPrompt": "string - Highly detailed Markdown prompt for an AI coding agent. Must include headings: # Project Scope, # Tech Stack (ONLY list technologies from the stack categories — do NOT add any technology that is not a stack category), # Architecture, # Suggested Folder Structure (3+ levels), # Core Features, # API Endpoints (with method, path, and request/response details), # Event Topics (with example event schemas), # Data Models (with fields and relationships), # Agent Instructions (step-by-step), and # Architectural Patterns. Use only the recommended technologies from the stack (no alternatives). Provide concrete, app-specific details. For local/hybrid apps, also include # Local Storage Schema and # Sync Protocol. Do not mention pricing."
 `;
 
 // Regen uses the same fields as POST_STACK_FIELDS
