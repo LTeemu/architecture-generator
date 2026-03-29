@@ -122,7 +122,7 @@ ${codingPrompt}
                 cursor: !hasPendingChanges || updating ? "not-allowed" : "pointer",
                 color: !hasPendingChanges || updating ? "#aaa" : "#fff",
                 fontWeight: 700, fontSize: "13px",
-                 fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
+                fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
                 display: "flex", alignItems: "center", gap: "6px",
               }}>
               {updating ? "Updating…" : "Update Sections →"}

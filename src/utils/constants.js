@@ -131,11 +131,11 @@ OUTPUT QUALITY:
 14. The mermaidChart must have NO disconnected nodes — every node must have at least one edge. Verify this before outputting. Every node label MUST include the technology name in parentheses.
 
 MERMAID SYNTAX RULES (CRITICAL):
-15. Every node MUST use the form NodeID["Role (Technology)"] — the DOUBLE QUOTES inside the brackets are MANDATORY; the technology name must be inside the label in parentheses, matching the selected stack exactly.
-16. Edge connections MUST use the full labels: NodeA["Role (Technology)"] -->|"Action"| NodeB["Role (Technology)"]. Bare NodeIDs are FORBIDDEN in edge connections.
-17. Edge labels MUST be wrapped in double quotes. The closing token after the label in a standard arrow is | — NEVER |>. Invalid: A -->|"label"|> B. Valid: A["Client"] -->|"label"| B["Server"].
-18. Subgraphs: Every node must be inside a subgraph. Do not use layer names as node labels. Node IDs and Subgraph IDs must be globally unique.
-19. Define all nodes inline with connections or before use. Example check: A["Client (React)"] -->|"sends"| B["Server (Node)"].
+15. Every node MUST use the form NodeID["Role (Technology)"] — the DOUBLE QUOTES inside the brackets are MANDATORY; the technology name must be inside the label in parentheses, matching the selected stack exactly. Node IDs MUST be fully descriptive English words (e.g. PostgresDB, ReactClient). NEVER use single letters or meaningless numbered IDs like S1, C1, Node1.
+16. CRITICAL: You MUST declare nodes on a separate line from their connections. Do NOT define a node label and connect it in the same line.
+17. Once a node is defined, you MUST use ONLY its bare NodeID in all edge connections. Do NOT duplicate the ["Label"] string in connections. Valid: ReactClient -->|"Action"| NodeServer.
+18. Edge labels MUST be wrapped in double quotes. The closing token after the label in a standard arrow is | — NEVER |>.
+19. Subgraphs: Subgraph IDs MUST be a single alphanumeric word without ANY spaces or hyphens. Every node must be defined inside a subgraph. Subgraphs MUST be closed with the bare word "end" on a new line.
 `;
 
 
@@ -152,9 +152,9 @@ const FINAL_ENFORCEMENT = `
 You MUST output valid JSON. Every field must be present and correctly typed.
 Before writing the mermaidChart value, self-check:
 - Every edge uses -->|"quoted label"| — label wrapped in double quotes, closing token is | not |>.
-- Every edge connection uses the FULL NodeID["Role (Technology)"] for BOTH nodes. Bare node IDs are FORBIDDEN in edge connections.
-- Every node uses NodeID["Role (Technology)"] — no bare node IDs, technology name inside the quoted label.
-- Every node has at least one edge and belongs to a subgraph.
+- Every edge connection uses bare NodeIDs ONLY (e.g. ReactClient -->|"Action"| NodeServer). Do NOT duplicate node labels in connections.
+- Every node is defined within its subgraph using NodeID["Role (Technology)"]. Node IDs MUST be fully descriptive (e.g. ReactClient, PostgresDB).
+- Every node has at least one edge. Subgraphs must end with "end" and Subgraph IDs MUST NOT have spaces.
 Before finalizing the entire output, self-check feature completeness:
 - Verify every item in featureList. Does it appear in the featureReference field of at least one stack category? If any feature is missing, add a stack category for it.
 `;
@@ -201,7 +201,7 @@ const POST_STACK_FIELDS = `
   "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
   "mermaidChart": "string - ONLY output raw mermaid.js syntax. CRITICAL: Follow the MERMAID SYNTAX RULES defined above. Every node MUST have a technology name in quotes.",
   "scalingGuide": "string - Provide a concise scaling guide. Reference ONLY the selected technologies by name. Identify the SINGLE component that will become a bottleneck FIRST under load for this specific technology combination, explain why it breaks, and describe the concrete mitigation. Then identify the SECOND bottleneck and its mitigation. List specific metrics to monitor for each. Do NOT give generic cloud advice — all guidance must be specific to the chosen stack.",
-  "codingAgentPrompt": "string - Highly detailed Markdown prompt for an AI coding agent. CRITICAL FORMATTING: You MUST add an empty blank line before every # Heading so sections don't cluster together. Must include headings: # Project Scope, # Tech Stack (ONLY list technologies from the stack categories — do NOT add any technology that is not a stack category), # Architecture, # Suggested Folder Structure (3+ levels), # Core Features, # API Endpoints (with method, path, and request/response details), # Event Topics (with example event schemas that include ALL relevant field names), # Data Models (CRITICAL: each model must include ALL domain-appropriate fields with types — primary keys, foreign keys, timestamps, soft-delete flags, and any field implied by the features described. Every feature the user described MUST have a corresponding model or be reflected as fields in an existing model. Do NOT output minimal stub models.), # Agent Instructions (step-by-step), and # Architectural Patterns. Use only the recommended technologies from the stack (no alternatives). Provide concrete, app-specific details. For local/hybrid apps, also include # Local Storage Schema and # Sync Protocol. Do not mention pricing."
+  "codingAgentPrompt": "string - Highly detailed Markdown prompt for an AI coding agent. Must include headings: # Project Scope, # Tech Stack (ONLY list technologies from the stack categories — do NOT add any technology that is not a stack category), # Architecture, # Suggested Folder Structure (3+ levels), # Core Features, # API Endpoints (CRITICAL: Must include method, path, AND exact JSON request/response payloads), # Event Topics (with multiline JSON event schemas), # Data Models (CRITICAL: NO SINGLE-LINE STUBS. Each model MUST be a multi-line structure including ALL domain-appropriate fields with types — primary keys, foreign keys, createdAt/updatedAt, soft-delete. Every feature the user described MUST have a corresponding model.), # Agent Instructions (step-by-step), and # Architectural Patterns. Use only the recommended technologies from the stack (no alternatives). Provide concrete, app-specific details. For local/hybrid apps, also include # Local Storage Schema and # Sync Protocol. Do not mention pricing."
 `;
 
 // Regen uses the same fields as POST_STACK_FIELDS
