@@ -19,7 +19,7 @@ export function ResultsSection({
 
   const arch = dynData?.architecture;
   const scalingGuide = dynData?.scalingGuide;
-  const codingPrompt = dynData?.codingAgentPrompt || "";
+  const codingPrompt = (dynData?.codingAgentPrompt || "").trimStart();
   const mermaidChart = dynData?.mermaidChart;
 
   const exportAsMarkdown = () => {

@@ -81,11 +81,12 @@ export default function App() {
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           response_format: { type: "json_object" },
-          max_tokens: 5000,
+          max_tokens: 6000,
           temperature: 0.1,
           messages: [
             { role: "system", content: SYSTEM_PROMPT_REGEN },
-            { role: "user", content: `App: ${submittedDescription || description}
+            {
+              role: "user", content: `App: ${submittedDescription || description}
 
 Selected tech stack (use ONLY these):
 ${stackSummary}
@@ -162,7 +163,7 @@ Generate architecture, scaling guide, and coding prompt for this stack. Do NOT a
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           response_format: { type: "json_object" },
-          max_tokens: 5000,
+          max_tokens: 6000,
           temperature: 0.1,
           messages: [
             { role: "system", content: SYSTEM_PROMPT_INITIAL },
@@ -214,14 +215,14 @@ Generate architecture, scaling guide, and coding prompt for this stack. Do NOT a
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
   };
 
-return (
-  <div style={{
-    minHeight: "100vh",
-    background: darkMode ? "#020617" : "#f1f5f9",
-    fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
-    color: darkMode ? "#f8fafc" : "#1e293b"
-  }}>
-<style>{`
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: darkMode ? "#020617" : "#f1f5f9",
+      fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif",
+      color: darkMode ? "#f8fafc" : "#1e293b"
+    }}>
+      <style>{`
   * { box-sizing: border-box; }
   .gen-btn { }
   .gen-btn:hover:not(:disabled) { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 16px #2563eb33 !important; }
@@ -275,7 +276,7 @@ return (
             marginBottom: "16px"
           }}>
             <div className="dot-pulse" style={{ marginBottom: "16px" }}><span /><span /><span /></div>
-             <p style={{ color: darkMode ? "#94a3b8" : "#999", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", fontSize: "13px", margin: 0 }}>{STEPS[loadingStep]}</p>
+            <p style={{ color: darkMode ? "#94a3b8" : "#999", fontFamily: "'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif", fontSize: "13px", margin: 0 }}>{STEPS[loadingStep]}</p>
           </div>
         )}
 

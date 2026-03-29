@@ -129,46 +129,16 @@ OUTPUT QUALITY:
 12. Key decisions must be tradeoffs ("X over Y because Z"), not requirements.
 13. scalingGuide must reference SPECIFIC selected tools and describe concrete bottlenecks.
 14. The mermaidChart must have NO disconnected nodes — every node must have at least one edge. Verify this before outputting. Every node label MUST include the technology name in parentheses.
+
+MERMAID SYNTAX RULES (CRITICAL):
+15. Every node MUST use the form NodeID["Role (Technology)"] — the DOUBLE QUOTES inside the brackets are MANDATORY; the technology name must be inside the label in parentheses, matching the selected stack exactly.
+16. Edge connections MUST use the full labels: NodeA["Role (Technology)"] -->|"Action"| NodeB["Role (Technology)"]. Bare NodeIDs are FORBIDDEN in edge connections.
+17. Edge labels MUST be wrapped in double quotes. The closing token after the label in a standard arrow is | — NEVER |>. Invalid: A -->|"label"|> B. Valid: A["Client"] -->|"label"| B["Server"].
+18. Subgraphs: Every node must be inside a subgraph. Do not use layer names as node labels. Node IDs and Subgraph IDs must be globally unique.
+19. Define all nodes inline with connections or before use. Example check: A["Client (React)"] -->|"sends"| B["Server (Node)"].
 `;
 
-const MERMAID_RULES = `
-MERMAID SYNTAX RULES:
 
-CRITICAL LABELING RULES (HIGHEST PRIORITY):
-- Node labels MUST represent specific components (e.g., 'API Gateway', 'Device Registry', 'Worker Service').
-  Do NOT use layer names as node labels (e.g., avoid 'Client Layer', 'Cloud Orchestration Layer' as node labels).
-- Edge labels MUST describe the specific data or control flow (e.g., 'sends telemetry', 'updates configuration').
-  Do NOT use generic terms like 'events', 'data', 'actions', or 'requests' without further context.
-
-TECHNOLOGY NAMING REQUIREMENT:
-⚠️ Every node label MUST include the technology name in parentheses. Format: Role (Technology). Examples: 'Message Service (Pusher)', 'Database (PostgreSQL)', 'File Storage (Amazon S3)', 'Client App (React)'.
-
-FORBIDDEN labels (these are INVALID): 'Client', 'Server', 'Database', 'Storage', 'API', 'Client App', 'Server App'. You MUST add the technology: 'Client App (React)', 'Server (Node.js)', 'Database (PostgreSQL)', 'File Storage (Amazon S3)', 'API Gateway (Express)'.
-
-SYNTAX RULES:
-- Start with 'graph TD' or 'graph LR' – no backticks.
-- Node: NodeID["Label (Technology)"] (NodeID alphanumeric, no spaces; label descriptive with technology in parentheses).
-- Edge: NodeA -->|"Action"| NodeB (use descriptive action labels).
-- Subgraph: subgraph LayerID ["Layer Name"]; Node1; Node2; end. Every node must be inside a subgraph.
-- Bidirectional: use two edges or NodeA <-->|"exchange"| NodeB.
-- Define all nodes before use.
-- Every node must have ≥1 edge, and edges must cover all dataFlow steps.
-- Subgraph IDs and node IDs MUST be globally unique. Do NOT use the same ID for a subgraph and a node.
-
-Example (do not copy, but follow the structure):
-graph TD
-  subgraph ClientLayer ["Client Layer"]
-    UserApp["User Application (React)"]
-  end
-  subgraph APILayer ["API Layer"]
-    Gateway["API Gateway (Express)"]
-  end
-  subgraph DataLayer ["Data Layer"]
-    Storage["Data Storage (PostgreSQL)"]
-  end
-  UserApp -->|"submits request"| Gateway
-  Gateway -->|"queries data"| Storage
-`;
 
 const OUTPUT_INSTRUCTION = `
 Respond ONLY with a valid JSON object. No text before '{' and no text after '}'.
@@ -180,7 +150,13 @@ Generate a JSON object with the following structure:
 
 const FINAL_ENFORCEMENT = `
 You MUST output valid JSON. Every field must be present and correctly typed.
-The mermaidChart must contain syntactically correct Mermaid code (starting with 'graph TD' or 'graph LR', using proper node/subgraph/edge syntax, and fully connected).
+Before writing the mermaidChart value, self-check:
+- Every edge uses -->|"quoted label"| — label wrapped in double quotes, closing token is | not |>.
+- Every edge connection uses the FULL NodeID["Role (Technology)"] for BOTH nodes. Bare node IDs are FORBIDDEN in edge connections.
+- Every node uses NodeID["Role (Technology)"] — no bare node IDs, technology name inside the quoted label.
+- Every node has at least one edge and belongs to a subgraph.
+Before finalizing the entire output, self-check feature completeness:
+- Verify every item in featureList. Does it appear in the featureReference field of at least one stack category? If any feature is missing, add a stack category for it.
 `;
 
 // ========== FIELD DEFINITIONS ==========
@@ -188,14 +164,16 @@ The mermaidChart must contain syntactically correct Mermaid code (starting with 
 const PRE_STACK_FIELDS = `
   "deploymentModel": "string - 'local', 'cloud', or 'hybrid'.",
   "maxConcurrentUsersPerInstance": "number - (CRITICAL: 1 for local/offline apps, >1 for cloud/SaaS)",
+  "featureList": ["string - list EVERY distinct feature the user described, one item per feature. Do NOT merge features. This list determines the stack categories and must be complete before you write any stack entry."],
 `;
 
 const STACK_STRUCTURE = `
   "stack": [
     {
-      "// note": "CRITICAL: 4 to 8 specialized categories. Each distinct FEATURE the user described MUST be its own category. Do NOT drop any described feature. Also analyze implicit requirements: if users interact through a UI, include a Client/UI category; if data is stored, include a Database category; if server logic runs, include a Server/Backend category. Do NOT omit core categories just because the description focuses on features.",
+      "// note": "CRITICAL: You MUST output stack categories for all foundational layers (Client, Server, Database). For features in featureList, you may create a distinct category per feature OR group multiple compatible features under a single category (e.g. 'Channels & Threads' -> PostgreSQL). Do NOT skip any features from featureList. Every feature must be accounted for either in its own category or grouped into a shared one.",
       "// tools": "Only suggest technologies you are CERTAIN exist with real version numbers. Do NOT invent names or suggest discontinued products. Prefer well-known, widely-adopted technologies.",
       "category": "string - REQUIRED: Create a highly specific, context-aware category name tailored to this app's exact needs. Do NOT just use generic tiers.",
+      "featureReference": "string - EXACT text match to the item(s) in featureList that this category implements. If you grouped multiple features, list ALL of them here, separated by commas. Use 'Foundational' if this is a core layer (like Database) that doesn't map to specific features. CRITICAL: Every single item in featureList MUST be referenced in at least one category.",
       "recommended": {
         "icon": "string - single emoji character",
         "name": "string - technology name with version",
@@ -221,9 +199,9 @@ const POST_STACK_FIELDS = `
     "keyDecisions": ["string - MUST explain tradeoffs ('X over Y because Z'), not just requirements. Minimum 3."]
   },
   "architecturalPatterns": "string - Identify 1-2 advanced architectural interaction patterns specifically chosen for this context.",
-  "mermaidChart": "string - ONLY output raw mermaid.js syntax. ${MERMAID_RULES} REMINDER: Every node MUST have a technology name. BAD: 'Database', 'Server', 'ClientApp'. GOOD: 'Database (PostgreSQL)', 'Server (Node.js)', 'Client (React)'.",
-  "scalingGuide": "string - Provide a concise scaling guide. Reference the selected technologies by name. Describe what breaks first for THIS architecture and how to fix it. Include what to monitor.",
-  "codingAgentPrompt": "string - Highly detailed Markdown prompt for an AI coding agent. Must include headings: # Project Scope, # Tech Stack (ONLY list technologies from the stack categories — do NOT add any technology that is not a stack category), # Architecture, # Suggested Folder Structure (3+ levels), # Core Features, # API Endpoints (with method, path, and request/response details), # Event Topics (with example event schemas), # Data Models (with fields and relationships), # Agent Instructions (step-by-step), and # Architectural Patterns. Use only the recommended technologies from the stack (no alternatives). Provide concrete, app-specific details. For local/hybrid apps, also include # Local Storage Schema and # Sync Protocol. Do not mention pricing."
+  "mermaidChart": "string - ONLY output raw mermaid.js syntax. CRITICAL: Follow the MERMAID SYNTAX RULES defined above. Every node MUST have a technology name in quotes.",
+  "scalingGuide": "string - Provide a concise scaling guide. Reference ONLY the selected technologies by name. Identify the SINGLE component that will become a bottleneck FIRST under load for this specific technology combination, explain why it breaks, and describe the concrete mitigation. Then identify the SECOND bottleneck and its mitigation. List specific metrics to monitor for each. Do NOT give generic cloud advice — all guidance must be specific to the chosen stack.",
+  "codingAgentPrompt": "string - Highly detailed Markdown prompt for an AI coding agent. CRITICAL FORMATTING: You MUST add an empty blank line before every # Heading so sections don't cluster together. Must include headings: # Project Scope, # Tech Stack (ONLY list technologies from the stack categories — do NOT add any technology that is not a stack category), # Architecture, # Suggested Folder Structure (3+ levels), # Core Features, # API Endpoints (with method, path, and request/response details), # Event Topics (with example event schemas that include ALL relevant field names), # Data Models (CRITICAL: each model must include ALL domain-appropriate fields with types — primary keys, foreign keys, timestamps, soft-delete flags, and any field implied by the features described. Every feature the user described MUST have a corresponding model or be reflected as fields in an existing model. Do NOT output minimal stub models.), # Agent Instructions (step-by-step), and # Architectural Patterns. Use only the recommended technologies from the stack (no alternatives). Provide concrete, app-specific details. For local/hybrid apps, also include # Local Storage Schema and # Sync Protocol. Do not mention pricing."
 `;
 
 // Regen uses the same fields as POST_STACK_FIELDS

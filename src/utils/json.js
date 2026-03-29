@@ -1,3 +1,13 @@
+function sanitizeParsed(obj) {
+  if (obj?.mermaidChart) {
+    obj.mermaidChart = obj.mermaidChart.replace(/\|>/g, "|").replace(/^[ \t]+/gm, "");
+  }
+  if (obj?.codingAgentPrompt) {
+    obj.codingAgentPrompt = obj.codingAgentPrompt.replace(/^[ \t]+/gm, "");
+  }
+  return obj;
+}
+
 export function extractJSON(raw) {
   if (!raw) return null;
   const tryParse = s => {
@@ -16,6 +26,7 @@ export function extractJSON(raw) {
     () => { const f = raw.indexOf("{"), l = raw.lastIndexOf("}"); if (f < 0 || l <= f) throw 0; return tryParse(raw.slice(f, l + 1)); },
     () => { const c = raw.split("\n").filter(x => !x.trim().startsWith("```")).join("\n"); const f = c.indexOf("{"), l = c.lastIndexOf("}"); if (f < 0 || l <= f) throw 0; return tryParse(c.slice(f, l + 1)); },
   ];
-  for (const fn of attempts) { try { return fn(); } catch { } }
+  for (const fn of attempts) { try { return sanitizeParsed(fn()); } catch { } }
   return null;
 }
+
