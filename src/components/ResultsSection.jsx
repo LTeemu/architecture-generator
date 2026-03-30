@@ -176,7 +176,6 @@ ${codingPrompt}
         )}
       </Section>
 
-      {/* Cost */}
       {/* Scaling */}
       <Section badge="Scaling Guide" accentColor="#ea580c" updating={updating} darkMode={darkMode}>
         {updating ? <SectionSkeleton color="#ea580c" darkMode={darkMode} /> : scalingGuide && (

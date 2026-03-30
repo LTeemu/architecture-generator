@@ -26,7 +26,7 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
       WebkitBackdropFilter: "blur(12px)",
       borderBottom: "1px solid", 
       borderColor: darkMode ? "rgba(51, 65, 85, 0.5)" : "rgba(228, 228, 234, 0.5)", 
-      padding: "0 24px", 
+      padding: width < 500 ? "0 12px" : "0 24px", 
       position: "sticky", 
       top: 0, 
       zIndex: 100
@@ -88,10 +88,10 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
             
             {showHistory && (
               <div style={{ 
-                position: "absolute", 
+                position: width < 500 ? "fixed" : "absolute", 
                 top: "calc(100% + 12px)", 
-                right: 0, 
-                width: "300px", 
+                right: 0,
+                width: width < 500 ? "100vw" : "300px",
                 background: darkMode ? "#0f172a" : "#fff", 
                 border: "1px solid", 
                 borderColor: darkMode ? "#334155" : "#e2e8f0", 
@@ -99,7 +99,8 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", 
                 maxHeight: "400px", 
                 overflowY: "auto", 
-                padding: "16px" 
+                padding: "16px",
+                boxSizing: "border-box"
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
                   <h3 style={{ fontSize: "10px", fontWeight: 700, margin: 0, color: darkMode ? "#94a3b8" : "#777", textTransform: "uppercase", letterSpacing: "0.1em" }}>Recent Generations</h3>
