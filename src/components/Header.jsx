@@ -68,7 +68,7 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
               style={{ 
                 height: "32px",
                 padding: "0 12px", 
-                fontSize: "12px", 
+                fontSize: "10px", 
                 border: "1px solid", 
                 borderColor: darkMode ? "#334155" : "#e8e8ee", 
                 borderRadius: "6px", 
@@ -82,14 +82,14 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 gap: "6px"
               }}
             >
-              <HistoryIcon />
+              {/* <HistoryIcon /> */}
               History ({history.length})
             </button>
             
             {showHistory && (
               <div style={{ 
                 position: width < 500 ? "fixed" : "absolute", 
-                top: "calc(100% + 12px)", 
+                top: width < 500 ? "100%" : "calc(100% + 12px)", 
                 right: 0,
                 width: width < 500 ? "100vw" : "300px",
                 background: darkMode ? "#0f172a" : "#fff", 
@@ -97,7 +97,7 @@ export function Header({ apiKey, setApiKey, width, history, onHistorySelect, cle
                 borderColor: darkMode ? "#334155" : "#e2e8f0", 
                 borderRadius: "12px", 
                 boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", 
-                maxHeight: "400px", 
+                maxHeight: "300px", 
                 overflowY: "auto", 
                 padding: "16px",
                 boxSizing: "border-box"
